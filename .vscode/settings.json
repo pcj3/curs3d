@@ -1,0 +1,7 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "matrix33.h": "c",
+        "matrix44.h": "c"
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": { "executable": "/bin/bash", "args": [ "-c" ] }
+    },
+    "problemMatcher": "$gcc",
+    "type": "shell",
+    "tasks": [
+        {
+            "label": "make debug",
+            "group": "build",
+            "command": "make test_debug",
+        },
+    ]
+}
