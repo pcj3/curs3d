@@ -8,7 +8,7 @@ INC_DIRS 	:= $(shell find $(SRC_DIR) -type d)
 INC_FLAGS 	:= $(addprefix -I,$(INC_DIRS))
 CPPFLAGS	:= $(INC_FLAGS)
 CFLAGS		:= -Wall
-LDFLAGS		:= -lncurses
+LDFLAGS		:= -lncurses -lm
 
 
 $(TARGET_EXEC): $(OBJS)

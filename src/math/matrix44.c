@@ -96,7 +96,7 @@ void matrix44_transpose(
 
 void matrix44_scale(
     INOUT MATRIX44_t* p_matA, 
-    IN float s)
+    IN R8 s)
 {
     p_matA->e0 *= s;
     p_matA->e1 *= s;
@@ -126,15 +126,35 @@ void matrix44_copy(
 void matrix44_setToZero(
     INOUT MATRIX44_t* p_matA)
 {
-    memset(p_matA, 0, sizeof(MATRIX44_t));
+    memset(p_matA, 0.f, sizeof(MATRIX44_t));
 }
-void matrix44_
+
+void matrix44_setToIdentity(
+    INOUT MATRIX44_t* p_matA)
+{
+    p_matA->e0 = 1.f;
+    p_matA->e1 = 0.f;
+    p_matA->e2 = 0.f;
+    p_matA->e3 = 0.f;
+    p_matA->e4 = 0.f;
+    p_matA->e5 = 1.f;
+    p_matA->e6 = 0.f;
+    p_matA->e7 = 0.f;
+    p_matA->e8 = 0.f;
+    p_matA->e9 = 0.f;
+    p_matA->e10 = 1.f;
+    p_matA->e11 = 0.f;
+    p_matA->e12 = 0.f;
+    p_matA->e13 = 0.f;
+    p_matA->e14 = 0.f;
+    p_matA->e15 = 1.f;
+}
 
 void matrix44_print(
     IN const MATRIX44_t* pk_matA)
 {   
-    printf("\n| %.2f %.2f %.2f %.2f |\n", pk_matA->e0, pk_matA->e1, pk_matA->e2, pk_matA->e3);
-    printf("| %.2f %.2f %.2f %.2f|\n", pk_matA->e4, pk_matA->e5, pk_matA->e6, pk_matA->e7);
-    printf("| %.2f %.2f %.2f %.2f|\n", pk_matA->e8, pk_matA->e9, pk_matA->e10, pk_matA->e11);
-    printf("| %.2f %.2f %.2f %.2f|\n", pk_matA->e12, pk_matA->e13, pk_matA->e14, pk_matA->e15);
+    printf("| %.2f %.2f %.2f %.2f |\n", pk_matA->e0, pk_matA->e1, pk_matA->e2, pk_matA->e3);
+    printf("| %.2f %.2f %.2f %.2f |\n", pk_matA->e4, pk_matA->e5, pk_matA->e6, pk_matA->e7);
+    printf("| %.2f %.2f %.2f %.2f |\n", pk_matA->e8, pk_matA->e9, pk_matA->e10, pk_matA->e11);
+    printf("| %.2f %.2f %.2f %.2f |\n", pk_matA->e12, pk_matA->e13, pk_matA->e14, pk_matA->e15);
 }

@@ -65,7 +65,7 @@ void matrix33_transpose(
 
 void matrix33_scale(
     INOUT MATRIX33_t* p_matA, 
-    IN float s)
+    IN R8 s)
 {
     p_matA->e0 *= s;
     p_matA->e1 *= s;
@@ -94,7 +94,7 @@ void matrix33_setToZero(
 void matrix33_print(
     IN const MATRIX33_t* pk_matA)
 {   
-    printf("\n| %.2f %.2f %.2f |\n", pk_matA->e0, pk_matA->e1, pk_matA->e2);
+    printf("| %.2f %.2f %.2f |\n", pk_matA->e0, pk_matA->e1, pk_matA->e2);
     printf("| %.2f %.2f %.2f |\n", pk_matA->e3, pk_matA->e4, pk_matA->e5);
     printf("| %.2f %.2f %.2f |\n", pk_matA->e6, pk_matA->e7, pk_matA->e8);
 }
