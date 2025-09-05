@@ -26,14 +26,14 @@ void trans_scaleMatrix44ByVector3(
 void trans_rotateMatrix44ByVector3(
     IN const MATRIX44_t* pk_matA,
     IN const VECTOR3_t* pk_vecA,
-    IN const R8 k_angle,
+    IN const R4 k_angle,
     OUT MATRIX44_t* p_matB)
 {
     VECTOR3_t axis;
 
     vector3_normalize(pk_vecA, &axis);
     vector3_print(&axis);
-    
+
     MATRIX33_t axisMatrix = {0.f, -axis.e2, axis.e1, \
                             axis.e2, 0.f, -axis.e0, \
                             -axis.e1, axis.e0, 0.f};

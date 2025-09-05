@@ -27,10 +27,10 @@ void matrix44_multiply(
 }
 
 void matrix44_add(
-    IN const MATRIX44_t* pk_matA, 
+    IN const MATRIX44_t* pk_matA,
     IN const MATRIX44_t* pk_matB,
-    OUT MATRIX44_t* p_matC) 
-{   
+    OUT MATRIX44_t* p_matC)
+{
     p_matC->e0 = pk_matA->e0 + pk_matB->e0;
     p_matC->e1 = pk_matA->e1 + pk_matB->e1;
     p_matC->e2 = pk_matA->e2 + pk_matB->e2;
@@ -50,10 +50,10 @@ void matrix44_add(
 }
 
 void matrix44_subtrack(
-    IN const MATRIX44_t* pk_matA, 
+    IN const MATRIX44_t* pk_matA,
     IN const MATRIX44_t* pk_matB,
-    OUT MATRIX44_t* p_matC) 
-{   
+    OUT MATRIX44_t* p_matC)
+{
     p_matC->e0 = pk_matA->e0 - pk_matB->e0;
     p_matC->e1 = pk_matA->e1 - pk_matB->e1;
     p_matC->e2 = pk_matA->e2 - pk_matB->e2;
@@ -73,9 +73,9 @@ void matrix44_subtrack(
 }
 
 void matrix44_transpose(
-    IN const MATRIX44_t* pk_matA, 
-    OUT MATRIX44_t* p_matB) 
-{   
+    IN const MATRIX44_t* pk_matA,
+    OUT MATRIX44_t* p_matB)
+{
     p_matB->e0 = p_matB->e0;
     p_matB->e1 = p_matB->e4;
     p_matB->e2 = p_matB->e8;
@@ -95,8 +95,8 @@ void matrix44_transpose(
 }
 
 void matrix44_scale(
-    INOUT MATRIX44_t* p_matA, 
-    IN R8 s)
+    INOUT MATRIX44_t* p_matA,
+    IN R4 s)
 {
     p_matA->e0 *= s;
     p_matA->e1 *= s;
@@ -152,7 +152,7 @@ void matrix44_setToIdentity(
 
 void matrix44_print(
     IN const MATRIX44_t* pk_matA)
-{   
+{
     printf("| %.2f %.2f %.2f %.2f |\n", pk_matA->e0, pk_matA->e1, pk_matA->e2, pk_matA->e3);
     printf("| %.2f %.2f %.2f %.2f |\n", pk_matA->e4, pk_matA->e5, pk_matA->e6, pk_matA->e7);
     printf("| %.2f %.2f %.2f %.2f |\n", pk_matA->e8, pk_matA->e9, pk_matA->e10, pk_matA->e11);

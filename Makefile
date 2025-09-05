@@ -7,13 +7,13 @@ OBJS 		:= $(SRCS:%=$(BUILD_DIR)/%.o)
 INC_DIRS 	:= $(shell find $(SRC_DIR) -type d)
 INC_FLAGS 	:= $(addprefix -I,$(INC_DIRS))
 CPPFLAGS	:= $(INC_FLAGS)
-CFLAGS		:= -Wall
-LDFLAGS		:= -lncurses -lm
+CFLAGS		:= -Wall -Wpadded
+LDFLAGS		:= -lncursesw -lm
 
 
 $(TARGET_EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
-	
+
 $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
@@ -21,13 +21,12 @@ $(BUILD_DIR)/%.c.o: %.c
 debug: $(OBJS)
 	$(CC) $(OBJS) -g -o $@ $(LDFLAGS)
 
-# $(BUILD_DIR)/%.c.o: %.c
-# 	mkdir -p $(dir $@)
-# 	$(CC) $(CPPFLAGS) $(CFLAGS) -g -c $< -o $@
-
-# test_debug: $(OBJS)
-# 	$(CC) $(OBJS) -g -o $@ $(LDFLAGS)
-
 .PHONY: clean
 clean:
-	rm -r $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)
+	rm -rf ./$(TARGET_EXEC)
+
+run :
+	make clean
+	make $(TARGET_EXEC)
+	./$(TARGET_EXEC)

@@ -17,10 +17,10 @@ void matrix33_multiply(
 }
 
 void matrix33_add(
-    IN const MATRIX33_t* pk_matA, 
+    IN const MATRIX33_t* pk_matA,
     IN const MATRIX33_t* pk_matB,
-    OUT MATRIX33_t* p_matC) 
-{   
+    OUT MATRIX33_t* p_matC)
+{
     p_matC->e0 = pk_matA->e0 + pk_matB->e0;
     p_matC->e1 = pk_matA->e1 + pk_matB->e1;
     p_matC->e2 = pk_matA->e2 + pk_matB->e2;
@@ -33,10 +33,10 @@ void matrix33_add(
 }
 
 void matrix33_subtract(
-    IN const MATRIX33_t* pk_matA, 
+    IN const MATRIX33_t* pk_matA,
     IN const MATRIX33_t* pk_matB,
-    OUT MATRIX33_t* p_matC) 
-{   
+    OUT MATRIX33_t* p_matC)
+{
     p_matC->e0 = pk_matA->e0 - pk_matB->e0;
     p_matC->e1 = pk_matA->e1 - pk_matB->e1;
     p_matC->e2 = pk_matA->e2 - pk_matB->e2;
@@ -49,9 +49,9 @@ void matrix33_subtract(
 }
 
 void matrix33_transpose(
-    IN const MATRIX33_t* pk_matA, 
-    OUT MATRIX33_t* p_matB) 
-{   
+    IN const MATRIX33_t* pk_matA,
+    OUT MATRIX33_t* p_matB)
+{
     p_matB->e0 = pk_matA->e0;
     p_matB->e1 = pk_matA->e3;
     p_matB->e2 = pk_matA->e6;
@@ -64,8 +64,8 @@ void matrix33_transpose(
 }
 
 void matrix33_scale(
-    INOUT MATRIX33_t* p_matA, 
-    IN R8 s)
+    INOUT MATRIX33_t* p_matA,
+    IN R4 s)
 {
     p_matA->e0 *= s;
     p_matA->e1 *= s;
@@ -93,7 +93,7 @@ void matrix33_setToZero(
 
 void matrix33_print(
     IN const MATRIX33_t* pk_matA)
-{   
+{
     printf("| %.2f %.2f %.2f |\n", pk_matA->e0, pk_matA->e1, pk_matA->e2);
     printf("| %.2f %.2f %.2f |\n", pk_matA->e3, pk_matA->e4, pk_matA->e5);
     printf("| %.2f %.2f %.2f |\n", pk_matA->e6, pk_matA->e7, pk_matA->e8);
