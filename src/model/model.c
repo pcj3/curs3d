@@ -2,14 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "model.h"
+#include "face.h"
 
-void model_print_vertices(
+void model_print(
     IN const MODEL_t* pk_model)
 {
-    const VECTOR3_t* pk_vertex = pk_model->vertices;
-    for (U4 i = 0; i < pk_model->numberVertices; i++, pk_vertex++)
-    {
-        vector3_print(pk_vertex);
+    const FACE_t* pk_face = pk_model->faces;
+    for (U4 i = 0; i < pk_model->numberFaces; i++, pk_face++)
+    {   
+        printf("%lu face with %lu vertices\n", i, pk_face->numberVertices);
+        for (U4 j = 0; j < pk_face->numberVertices; j++)
+        {
+            printf("%lu ", pk_face->idxVertices[j]);
+        }
         printf("\n");
     }
 }

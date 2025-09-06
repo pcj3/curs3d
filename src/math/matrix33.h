@@ -16,13 +16,6 @@ typedef struct MATRIX33_s
     R4 e6;
     R4 e7;
     R4 e8;
-    R4 e9;
-    R4 e10;
-    R4 e11;
-    R4 e12;
-    R4 e13;
-    R4 e14;
-    R4 e15;
 } MATRIX33_t;
 
 void matrix33_multiply(

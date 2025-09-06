@@ -44,10 +44,6 @@ void matrix44_transpose(
     IN const MATRIX44_t* pk_matA,
     OUT MATRIX44_t* p_matB);
 
-void matrix44_scale(
-    INOUT MATRIX44_t* pk_matA,
-    IN R4 s);
-
 void matrix44_copy(
     IN const MATRIX44_t* pk_matA,
     OUT MATRIX44_t* p_matB);

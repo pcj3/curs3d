@@ -4,51 +4,59 @@
 #include "vector3.h"
 #include "face.h"
 
-typedef enum {
-    OBJ_FACE_NONE,
-    OBJ_FACE_VERTICES,
-    OBJ_FACE_VERTICES_TEXTURES,
-    OBJ_FACE_VERTICES_NORMALS,
-    OBJ_FACE_VERTICES_NORMALS_TEXTURES
-} OBJ_FACE_CONTENT_t;
+#define OBJ_LINE_BUFFER 128
 
-static void obj_update_face_content(
+#define OBJ_IDX_TO_MAT_IDX(x) ((U4)atoi((x))-1)
+
+static void obj_setFaceAttrType(
     IN CH* word,
-    OUT OBJ_FACE_CONTENT_t* p_faceContent
-)
-{
-    *p_faceContent = OBJ_FACE_VERTICES_NORMALS_TEXTURES;
+    OUT FACE_ATTR_t* p_faceAttr)
+{   
+    if (!strchr(word, '/')) 
+    {
+        *p_faceAttr = FACE_ATTR_VERTICES;
+    } 
+    else if (strstr(word, "//")) 
+    {
+        *p_faceAttr = FACE_ATTR_VERTICES_NORMALS;
+    } 
+    else if (strchr(word, '/') == strrchr(word, '/')) 
+    {
+        *p_faceAttr = FACE_ATTR_VERTICES_TEXTURES;
+    } 
+    else 
+    {
+        *p_faceAttr = FACE_ATTR_VERTICES_TEXTURES_NORMALS;
+    }
 }
 
-static void obj_add_entry_to_face(
+static void obj_addAttrsToFace(
     IN CH* word,
     IN U1 faceIdx,
-    INOUT OBJ_FACE_CONTENT_t* p_faceContent,
+    INOUT FACE_ATTR_t* p_faceAttr,
     OUT FACE_t* p_face
 )
 {
     // Check if we need to find type of face content
-    if (*p_faceContent == OBJ_FACE_NONE)
+    if (*p_faceAttr == FACE_ATTR_NONE)
     {
-        obj_update_face_content(word, p_faceContent);
+        obj_setFaceAttrType(word, p_faceAttr);
     }
-    // CH wordCpy[10];
-    // strcpy(wordCpy, word);
-    // printf(wordCpy);
-    CH* vertexIdx = strtok(word, "/");
-    switch (*p_faceContent)
+    CH* p_word;
+    p_face->idxVertices[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+    switch (*p_faceAttr)
     {
-    case OBJ_FACE_VERTICES:
-        break;
-    case OBJ_FACE_VERTICES_TEXTURES:
-        break;
-    case OBJ_FACE_VERTICES_NORMALS:
-        break;
-    case OBJ_FACE_VERTICES_NORMALS_TEXTURES:
-        break;
+    case FACE_ATTR_VERTICES_TEXTURES:
+        p_face->idxTextures[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+    case FACE_ATTR_VERTICES_NORMALS:
+        p_face->idxNormals[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+    case FACE_ATTR_VERTICES_TEXTURES_NORMALS:
+        p_face->idxTextures[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+        p_face->idxNormals[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+    case FACE_ATTR_VERTICES:
+        FALLTHROUGH;
     default:
         break;
-
     }
 
 }
@@ -57,7 +65,7 @@ void obj_read_model(
     OUT MODEL_t* p_model)
 {
     // Open obj file
-    FILE* file = fopen("res/cube.obj", "r");
+    FILE* file = fopen("res/cow.obj", "r");
     if (file == NULL)
     {
         printf("Couldn't open obj file.\n");
@@ -69,25 +77,22 @@ void obj_read_model(
 
     // Prepare vars for parsing
     CH line[OBJ_LINE_BUFFER];
-    CH lineCpy[OBJ_LINE_BUFFER];
-    OBJ_FACE_CONTENT_t faceContent = OBJ_FACE_NONE;
+    CH* p_word;
 
     // Get ptrs from model
-    VECTOR3_t* p_vertices   = p_model->vertices;
-    // VECTOR3_t* p_normals    = p_model->normals;
-    // VECTOR3_t* p_textures   = p_model->textures;
+    VECTOR4_t* p_vertices   = p_model->vertices;
+    VECTOR3_t* p_normals    = p_model->normals;
+    VECTOR3_t* p_textures   = p_model->textures;
 
     FACE_t* p_faces = p_model->faces;
+
     // Get line
     while (fgets(line, OBJ_LINE_BUFFER, file)) {
         // Remove new line from the end of line
         line[strcspn(line, "\n")] = 0;
 
-        //Copy line
-        strcpy(lineCpy, line);
-
         // Get the first word and parse line type
-        CH* word = strtok(line, " ");
+        CH* word = strtok_r(line, " ", &p_word);
         // Check if valid
         if (word == NULL)
         {
@@ -96,30 +101,59 @@ void obj_read_model(
 
         // Check if vertex line type
         if (!strcmp(word, "v"))
-        {
-            p_vertices->e0 = atof(strtok(NULL, " "));
-            p_vertices->e1 = atof(strtok(NULL, " "));
-            p_vertices->e2 = atof(strtok(NULL, " "));
-
+        {   
+            p_vertices->x = (R4) atof(strtok_r(NULL, " ", &p_word));
+            p_vertices->y = (R4) atof(strtok_r(NULL, " ", &p_word));
+            p_vertices->z = (R4) atof(strtok_r(NULL, " ", &p_word));
+            word = strtok_r(NULL, " ", &p_word);
+            if (word)
+            {
+                p_vertices->w = (R4) atof(word);
+            }
+            else 
+            {
+                p_vertices->w = 1.f;
+            }
             p_vertices++;
             p_model->numberVertices++;
         }
+        // Check if texture line type
+        else if (!strcmp(word, "vt"))
+        {   
+            p_textures->x = (R4) atof(strtok_r(NULL, " ", &p_word));
+            p_textures->y = (R4) atof(strtok_r(NULL, " ", &p_word));
+            word = strtok_r(NULL, " ", &p_word);
+            if (word)
+            {
+                p_textures->z = (R4) atof(word);
+            }
+            p_textures++;
+            p_model->numberTextures++;
+        }
+        // Check if normal line type
+        else if (!strcmp(word, "vn"))
+        {   
+            p_normals->x = (R4) atof(strtok_r(NULL, " ", &p_word));
+            p_normals->y = (R4) atof(strtok_r(NULL, " ", &p_word));
+            p_normals->z = (R4) atof(strtok_r(NULL, " ", &p_word));
+            p_normals++;
+            p_model->numberNormals++;
+        }
         // Check if face line type
         else if (!strcmp(word, "f"))
-        {
-            strtok(lineCpy, " ");
-            CH* subword = strtok(NULL, " ");
+        {   
+            word = strtok_r(NULL, " ", &p_word);
             U1 faceIdx = 0;
-            while (subword != NULL)
+            while (word != NULL)
             {
-                printf("%d %s  ",faceIdx, subword);
-                obj_add_entry_to_face(subword, faceIdx, &faceContent, p_faces);
-                subword = strtok(NULL, " ");
+                obj_addAttrsToFace(word, faceIdx, &p_model->faceAttr, p_faces);
+                word = strtok_r(NULL, " ", &p_word);
                 faceIdx++;
             }
-            printf("\n");
-            p_faces++;
+            p_faces->numberVertices = faceIdx;
             p_model->numberFaces++;
+            p_faces++;
+            
         }
         // Rest of line types is not supported
         else

@@ -3,6 +3,7 @@
 
 #include "matrix44.h"
 #include "matrix33.h"
+#include "vector4.h"
 #include "vector3.h"
 
 void trans_scaleMatrix44ByVector3(
@@ -15,5 +16,10 @@ void trans_rotateMatrix44ByVector3(
     IN const VECTOR3_t* pk_vecA,
     IN const R4 k_angle,
     OUT MATRIX44_t* p_matB);
+
+void trans_multiplyMatrix44ByVector4(
+    IN const MATRIX44_t* pk_matA,
+    IN const VECTOR4_t* pk_vecB,
+    OUT VECTOR4_t* p_vecC);
 
 #endif // MATH_TRANS_H

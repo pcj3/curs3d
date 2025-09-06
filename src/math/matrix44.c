@@ -49,7 +49,7 @@ void matrix44_add(
     p_matC->e15 = pk_matA->e15 + pk_matB->e15;
 }
 
-void matrix44_subtrack(
+void matrix44_subtract(
     IN const MATRIX44_t* pk_matA,
     IN const MATRIX44_t* pk_matB,
     OUT MATRIX44_t* p_matC)
@@ -76,25 +76,25 @@ void matrix44_transpose(
     IN const MATRIX44_t* pk_matA,
     OUT MATRIX44_t* p_matB)
 {
-    p_matB->e0 = p_matB->e0;
-    p_matB->e1 = p_matB->e4;
-    p_matB->e2 = p_matB->e8;
-    p_matB->e3 = p_matB->e12;
-    p_matB->e4 = p_matB->e1;
-    p_matB->e5 = p_matB->e5;
-    p_matB->e6 = p_matB->e9;
-    p_matB->e7 = p_matB->e13;
-    p_matB->e8 = p_matB->e2;
-    p_matB->e9 = p_matB->e6;
-    p_matB->e10 = p_matB->e10;
-    p_matB->e11 = p_matB->e14;
-    p_matB->e12 = p_matB->e0;
-    p_matB->e13 = p_matB->e0;
-    p_matB->e14 = p_matB->e0;
-    p_matB->e15 = p_matB->e0;
+    p_matB->e0 = pk_matA->e0;
+    p_matB->e1 = pk_matA->e4;
+    p_matB->e2 = pk_matA->e8;
+    p_matB->e3 = pk_matA->e12;
+    p_matB->e4 = pk_matA->e1;
+    p_matB->e5 = pk_matA->e5;
+    p_matB->e6 = pk_matA->e9;
+    p_matB->e7 = pk_matA->e13;
+    p_matB->e8 = pk_matA->e2;
+    p_matB->e9 = pk_matA->e6;
+    p_matB->e10 = pk_matA->e10;
+    p_matB->e11 = pk_matA->e14;
+    p_matB->e12 = pk_matA->e0;
+    p_matB->e13 = pk_matA->e0;
+    p_matB->e14 = pk_matA->e0;
+    p_matB->e15 = pk_matA->e0;
 }
 
-void matrix44_scale(
+void matrix44_scaleByFactor(
     INOUT MATRIX44_t* p_matA,
     IN R4 s)
 {
