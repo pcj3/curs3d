@@ -5,6 +5,8 @@
         "matrix44.h": "c",
         "model.h": "c",
         "triangle.h": "c",
-        "trans.h": "c"
+        "trans.h": "c",
+        "time.h": "c",
+        "defs.h": "c"
     }
 }

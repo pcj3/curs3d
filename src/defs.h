@@ -39,5 +39,7 @@ typedef U2  DEPTH_t;
 #define WINDOW_WIDTH    ((U4) (COLS))
 #define WINDOW_HEIGHT   ((U4) (LINES))
 
+#define MAX_FPS (60)
+#define MIN_FRAME_TIME  (1.0 / MAX_FPS) // seconds
 #define PI_R4 (3.141592653f)
 #endif // AUX_H
