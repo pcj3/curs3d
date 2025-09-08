@@ -12,17 +12,14 @@ typedef struct VECTOR4_s {
     R4 w;
 } VECTOR4_t;
 
-void vector4_print(
-    IN const VECTOR4_t* pk_vecA);
-
 void vector4_multiplyElementWiseByVector4(
-    IN const VECTOR4_t* pk_vecA,
-    IN const VECTOR4_t* pk_vecB,
-    OUT VECTOR4_t* p_vecC);
+    IN const VECTOR4_t* pkVecA,
+    IN const VECTOR4_t* pkVecB,
+    OUT VECTOR4_t* pVecC);
 
 void vector4_addElementWiseVector4(
-    IN const VECTOR4_t* pk_vecA,
-    IN const VECTOR4_t* pk_vecB,
-    OUT VECTOR4_t* p_vecC);
+    IN const VECTOR4_t* pkVecA,
+    IN const VECTOR4_t* pkVecB,
+    OUT VECTOR4_t* pVecC);
 
 #endif // MATH_VECTOR4_H

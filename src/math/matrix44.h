@@ -26,35 +26,35 @@ typedef struct MATRIX44_s
 } MATRIX44_t;
 
 void matrix44_multiply(
-    IN const MATRIX44_t* pk_matA,
-    IN const MATRIX44_t* pk_matB,
-    OUT MATRIX44_t* p_matC);
+    IN const MATRIX44_t* pkMatA,
+    IN const MATRIX44_t* pkMatB,
+    OUT MATRIX44_t* pMatC);
 
 void matrix44_add(
-    IN const MATRIX44_t* pk_matA,
-    IN const MATRIX44_t* pk_matB,
-    OUT MATRIX44_t* p_matC);
+    IN const MATRIX44_t* pkMatA,
+    IN const MATRIX44_t* pkMatB,
+    OUT MATRIX44_t* pMatC);
 
 void matrix44_subtract(
-    IN const MATRIX44_t* pk_matA,
-    IN const MATRIX44_t* pk_matB,
-    OUT MATRIX44_t* p_matC);
+    IN const MATRIX44_t* pkMatA,
+    IN const MATRIX44_t* pkMatB,
+    OUT MATRIX44_t* pMatC);
 
 void matrix44_transpose(
-    IN const MATRIX44_t* pk_matA,
-    OUT MATRIX44_t* p_matB);
+    IN const MATRIX44_t* pkMatA,
+    OUT MATRIX44_t* pMatB);
 
 void matrix44_copy(
-    IN const MATRIX44_t* pk_matA,
-    OUT MATRIX44_t* p_matB);
+    IN const MATRIX44_t* pkMatA,
+    OUT MATRIX44_t* pMatB);
 
 void matrix44_setToZero(
-    INOUT MATRIX44_t* p_matA);
+    OUT MATRIX44_t* pMatA);
 
 void matrix44_setToIdentity(
-    INOUT MATRIX44_t* p_matA);
+    OUT MATRIX44_t* pMatA);
 
 void matrix44_print(
-    IN const MATRIX44_t* pk_matA);
+    IN const MATRIX44_t* pkMatA);
 
 #endif // MATH_MAT44_H

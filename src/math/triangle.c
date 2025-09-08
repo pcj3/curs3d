@@ -6,18 +6,18 @@
 
 
 BOOL triangle_isPointIn(
-    IN U4 x,
-    IN U4 y,
-    IN TRIANGLE_t* p_triangle)
+    IN const U4 kX,
+    IN const U4 kY,
+    IN const TRIANGLE_t* pkTriangle)
 {   
-    VECTOR4_t ptA = p_triangle->ptA;
-    VECTOR4_t ptB = p_triangle->ptB;
-    VECTOR4_t ptC = p_triangle->ptC;
+    VECTOR4_t ptA = pkTriangle->ptA;
+    VECTOR4_t ptB = pkTriangle->ptB;
+    VECTOR4_t ptC = pkTriangle->ptC;
 
-    R4 weightPtA = ((ptB.y - ptC.y) * (x - ptC.x) + (ptC.x - ptB.x) * (y - ptC.y)) / 
+    R4 weightPtA = ((ptB.y - ptC.y) * (kX - ptC.x) + (ptC.x - ptB.x) * (kY - ptC.y)) / 
                 ((ptB.y - ptC.y) * (ptA.x - ptC.x) + (ptC.x - ptB.x) * (ptA.y - ptC.y));
 
-    R4 weightPtB = ((ptC.y - ptA.y) * (x - ptC.x) + (ptA.x - ptC.x) * (y - ptC.y)) / 
+    R4 weightPtB = ((ptC.y - ptA.y) * (kX - ptC.x) + (ptA.x - ptC.x) * (kY - ptC.y)) / 
                 ((ptC.y - ptA.y) * (ptB.x - ptC.x) + (ptA.x - ptC.x) * (ptB.y - ptC.y));
     
     R4 weightPtC = 1.f - weightPtA - weightPtB;
@@ -29,9 +29,9 @@ BOOL triangle_isPointIn(
 }
 
 void triangle_transformToPixelXY(
-    IN const TRIANGLE_t* pk_triangleIn,
+    IN const TRIANGLE_t* pkTriangleIn,
     IN const FRAMEBUFFER_t* pk_frambuffer,
-    OUT TRIANGLE_t* p_triangleOut)
+    OUT TRIANGLE_t* pTriangleOut)
 {
     VECTOR4_t ptA0;
     VECTOR4_t ptB0;
@@ -40,15 +40,18 @@ void triangle_transformToPixelXY(
     VECTOR4_t ptA;
     VECTOR4_t ptB;
     VECTOR4_t ptC;
+
     VECTOR4_t vecPixelXY = {pk_frambuffer->width / 2, -1.f * pk_frambuffer->height / 2, 1, 1};
     VECTOR4_t vecPixelXY0 = {pk_frambuffer->width / 2, pk_frambuffer->height / 2, 0, 0};
-    vector4_multiplyElementWiseByVector4(&pk_triangleIn->ptA, &vecPixelXY, &ptA0);
-    vector4_multiplyElementWiseByVector4(&pk_triangleIn->ptB, &vecPixelXY, &ptB0);
-    vector4_multiplyElementWiseByVector4(&pk_triangleIn->ptC, &vecPixelXY, &ptC0);
+
+    vector4_multiplyElementWiseByVector4(&pkTriangleIn->ptA, &vecPixelXY, &ptA0);
+    vector4_multiplyElementWiseByVector4(&pkTriangleIn->ptB, &vecPixelXY, &ptB0);
+    vector4_multiplyElementWiseByVector4(&pkTriangleIn->ptC, &vecPixelXY, &ptC0);
+    
     vector4_addElementWiseVector4(&ptA0, &vecPixelXY0, &ptA);
     vector4_addElementWiseVector4(&ptB0, &vecPixelXY0, &ptB);
     vector4_addElementWiseVector4(&ptC0, &vecPixelXY0, &ptC);
-    p_triangleOut->ptA = ptA;
-    p_triangleOut->ptB = ptB;
-    p_triangleOut->ptC = ptC;
+    pTriangleOut->ptA = ptA;
+    pTriangleOut->ptB = ptB;
+    pTriangleOut->ptC = ptC;
 }

@@ -2,7 +2,6 @@
 #define DRAW_RASTER_h
 
 #include "defs.h"
-#include "vector2.h"
 #include "triangle.h"
 #include "framebuffer.h"
 

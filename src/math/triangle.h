@@ -12,14 +12,14 @@ typedef struct TRIANGLE_s {
 } TRIANGLE_t;
 
 BOOL triangle_isPointIn(
-    IN U4 x,
-    IN U4 y,
-    IN TRIANGLE_t* p_triangle
+    IN const U4 kX,
+    IN const U4 ky,
+    IN const TRIANGLE_t* pkTriangle
 );
 
 void triangle_transformToPixelXY(
-    IN const TRIANGLE_t* pk_triangleIn,
-    IN const FRAMEBUFFER_t* pk_frambuffer,
-    OUT TRIANGLE_t* p_triangleOut);
+    IN const TRIANGLE_t* pkTriangleIn,
+    IN const FRAMEBUFFER_t* pkFrambuffer,
+    OUT TRIANGLE_t* pTriangleOut);
 
 #endif // MATH_TRIANGLE_h

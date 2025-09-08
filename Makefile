@@ -1,7 +1,7 @@
 CC 			:= gcc
 TARGET_EXEC := test
-BUILD_DIR 	:= ./build
-SRC_DIR 	:= ./src
+BUILD_DIR 	:= build
+SRC_DIR 	:= src
 SRCS 		:= $(shell find $(SRC_DIR) -name '*.c')
 OBJS 		:= $(SRCS:%=$(BUILD_DIR)/%.o)
 INC_DIRS 	:= $(shell find $(SRC_DIR) -type d)

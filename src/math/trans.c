@@ -1,64 +1,90 @@
 #include "trans.h"
 #include <math.h>
+
 void trans_scaleMatrix44ByVector3(
-    IN const MATRIX44_t* pk_matA,
-    IN const VECTOR3_t* pk_vecB,
-    OUT MATRIX44_t* p_matC)
-{
-    p_matC->e0 = pk_matA->e0 * pk_vecB->x;
-    p_matC->e1 = pk_matA->e1 * pk_vecB->x;
-    p_matC->e2 = pk_matA->e2 * pk_vecB->x;
-    p_matC->e3 = pk_matA->e3 * pk_vecB->x;
-    p_matC->e4 = pk_matA->e4 * pk_vecB->y;
-    p_matC->e5 = pk_matA->e5 * pk_vecB->y;
-    p_matC->e6 = pk_matA->e6 * pk_vecB->y;
-    p_matC->e7 = pk_matA->e7 * pk_vecB->y;
-    p_matC->e8 = pk_matA->e8 * pk_vecB->z;
-    p_matC->e9 = pk_matA->e9 * pk_vecB->z;
-    p_matC->e10 = pk_matA->e10 * pk_vecB->z;
-    p_matC->e11 = pk_matA->e11 * pk_vecB->z;
-    p_matC->e12 = pk_matA->e12;
-    p_matC->e13 = pk_matA->e13;
-    p_matC->e14 = pk_matA->e14;
-    p_matC->e15 = pk_matA->e15;
+    IN const MATRIX44_t* pkMatA,
+    IN const VECTOR3_t* pkVecB,
+    OUT MATRIX44_t* pMatC)
+{   
+    MATRIX44_t tmpMat;
+
+    tmpMat.e0 = pkMatA->e0 * pkVecB->x;
+    tmpMat.e1 = pkMatA->e1 * pkVecB->x;
+    tmpMat.e2 = pkMatA->e2 * pkVecB->x;
+    tmpMat.e3 = pkMatA->e3 * pkVecB->x;
+    tmpMat.e4 = pkMatA->e4 * pkVecB->y;
+    tmpMat.e5 = pkMatA->e5 * pkVecB->y;
+    tmpMat.e6 = pkMatA->e6 * pkVecB->y;
+    tmpMat.e7 = pkMatA->e7 * pkVecB->y;
+    tmpMat.e8 = pkMatA->e8 * pkVecB->z;
+    tmpMat.e9 = pkMatA->e9 * pkVecB->z;
+    tmpMat.e10 = pkMatA->e10 * pkVecB->z;
+    tmpMat.e11 = pkMatA->e11 * pkVecB->z;
+    tmpMat.e12 = pkMatA->e12;
+    tmpMat.e13 = pkMatA->e13;
+    tmpMat.e14 = pkMatA->e14;
+    tmpMat.e15 = pkMatA->e15;
+
+    *pMatC = tmpMat;
 }
 
 void trans_rotateMatrix44ByVector3(
-    IN const MATRIX44_t* pk_matA,
-    IN const VECTOR3_t* pk_vecA,
-    IN const R4 k_angle, // in radians
-    OUT MATRIX44_t* p_matB)
+    IN const MATRIX44_t* pkMatA,
+    IN const VECTOR3_t* pkVecA,
+    IN const R4 kAngle, // in radians
+    OUT MATRIX44_t* pMatB)
 {
     VECTOR3_t axis;
-    vector3_normalize(pk_vecA, &axis);
+    vector3_normalize(pkVecA, &axis);
 
-    const R4 c = cosf(k_angle);
-    const R4 s = sinf(k_angle);
+    const R4 c = cosf(kAngle);
+    const R4 s = sinf(kAngle);
     const R4 t = 1.f - c;
 
     MATRIX44_t rotMatrix;
-    matrix44_setToZero(&rotMatrix);
+
+    R4 txy = t * axis.x * axis.y;
+    R4 txz = t * axis.x * axis.z;
+    R4 tyz = t * axis.y * axis.z;
+
+    R4 sx = s * axis.x;
+    R4 sy = s * axis.y;
+    R4 sz = s * axis.z;
+
     rotMatrix.e0 = t * axis.x * axis.x + c; 
-    rotMatrix.e1 = t * axis.x * axis.y - s * axis.z;
-    rotMatrix.e2 = t * axis.x * axis.y + s * axis.y;
-    rotMatrix.e4 = t * axis.x * axis.y + s * axis.z;
+    rotMatrix.e1 = txy - sz;
+    rotMatrix.e2 = txz + sy;
+    rotMatrix.e3 = 0.f;
+
+    rotMatrix.e4 = txy + sz;
     rotMatrix.e5 = t * axis.y * axis.y + c; 
-    rotMatrix.e6 = t * axis.y * axis.z - s * axis.x;
-    rotMatrix.e8 = t * axis.x * axis.y - s * axis.y;
-    rotMatrix.e9 = t * axis.y * axis.z + s * axis.x;    
-    rotMatrix.e10 = t * axis.z * axis.z + c;   
+    rotMatrix.e6 = tyz - sx;
+    rotMatrix.e7 = 0.f;
+
+    rotMatrix.e8 = txz - sy;
+    rotMatrix.e9 = tyz + sx;    
+    rotMatrix.e10 = t * axis.z * axis.z + c;
+    rotMatrix.e11 = 0.f;
+    
+    rotMatrix.e12 = 0.f;
+    rotMatrix.e13 = 0.f;
+    rotMatrix.e14 = 0.f;
     rotMatrix.e15 = 1.f;
 
-    matrix44_multiply(&rotMatrix, pk_matA, p_matB);
+    matrix44_multiply(&rotMatrix, pkMatA, pMatB);
 }
 
 void trans_multiplyMatrix44ByVector4(
-    IN const MATRIX44_t* pk_matA,
-    IN const VECTOR4_t* pk_vecB,
-    OUT VECTOR4_t* p_vecC)
+    IN const MATRIX44_t* pkMatA,
+    IN const VECTOR4_t* pkVecB,
+    OUT VECTOR4_t* pVecC)
 {
-    p_vecC->x = pk_matA->e0 * pk_vecB->x + pk_matA->e1 * pk_vecB->y + pk_matA->e2 * pk_vecB->z + pk_matA->e3 * pk_vecB->y;
-    p_vecC->y = pk_matA->e4 * pk_vecB->x + pk_matA->e5 * pk_vecB->y + pk_matA->e6 * pk_vecB->z + pk_matA->e7 * pk_vecB->y;
-    p_vecC->z = pk_matA->e8 * pk_vecB->x + pk_matA->e9 * pk_vecB->y + pk_matA->e10 * pk_vecB->z + pk_matA->e11 * pk_vecB->y;
-    p_vecC->w = pk_matA->e12 * pk_vecB->x + pk_matA->e13 * pk_vecB->y + pk_matA->e14 * pk_vecB->z + pk_matA->e15 * pk_vecB->y;
+    VECTOR4_t tmpVec;
+
+    tmpVec.x = pkMatA->e0 * pkVecB->x + pkMatA->e1 * pkVecB->y + pkMatA->e2 * pkVecB->z + pkMatA->e3 * pkVecB->w;
+    tmpVec.y = pkMatA->e4 * pkVecB->x + pkMatA->e5 * pkVecB->y + pkMatA->e6 * pkVecB->z + pkMatA->e7 * pkVecB->w;
+    tmpVec.z = pkMatA->e8 * pkVecB->x + pkMatA->e9 * pkVecB->y + pkMatA->e10 * pkVecB->z + pkMatA->e11 * pkVecB->w;
+    tmpVec.w = pkMatA->e12 * pkVecB->x + pkMatA->e13 * pkVecB->y + pkMatA->e14 * pkVecB->z + pkMatA->e15 * pkVecB->w;
+
+    *pVecC = tmpVec;
 }
