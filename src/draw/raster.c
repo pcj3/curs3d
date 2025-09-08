@@ -4,29 +4,33 @@
 #include "raster.h"
 #include "triangle.h"
 
-void draw_raster(
-    IN TRIANGLE_t* p_triangle,
-    OUT FRAMEBUFFER_t* p_frameBuffer)
-{
-    
+#define TO_PIXEL_XY(x, dhim) (x * hdim + hdim)
 
-    U4 minY = (U4) MAX(0, MIN(p_triangle->ptA.y, MIN(p_triangle->ptB.y, p_triangle->ptC.y)));
-    U4 minX = (U4) MAX(0, MIN(p_triangle->ptA.x, MIN(p_triangle->ptB.x, p_triangle->ptC.x)));
-    U4 maxY = (U4) MIN(p_frameBuffer->height, ceil(MAX(p_triangle->ptA.y, MAX(p_triangle->ptB.y, p_triangle->ptC.y)))+1);
-    U4 maxX = (U4) MIN(p_frameBuffer->width, ceil(MAX(p_triangle->ptA.x, MAX(p_triangle->ptB.x, p_triangle->ptC.x)))+1);
+void raster_triangle(
+    IN TRIANGLE_t* p_triangle,
+    OUT FRAMEBUFFER_t* p_framebuffer)
+{   
+    TRIANGLE_t triangleXY;
+    triangle_transformToPixelXY(p_triangle, p_framebuffer, &triangleXY);
+
+    U4 minY = (U4) MAX(0, MIN(triangleXY.ptA.y, MIN(triangleXY.ptB.y, triangleXY.ptC.y)));
+    U4 minX = (U4) MAX(0, MIN(triangleXY.ptA.x, MIN(triangleXY.ptB.x, triangleXY.ptC.x)));
+    U4 maxY = (U4) MIN(p_framebuffer->height, ceil(MAX(triangleXY.ptA.y, MAX(triangleXY.ptB.y, triangleXY.ptC.y)))+1);
+    U4 maxX = (U4) MIN(p_framebuffer->width, ceil(MAX(triangleXY.ptA.x, MAX(triangleXY.ptB.x, triangleXY.ptC.x)))+1);
     
     for (U4 y = minY; y < maxY; y++)
     {
         for (U4 x = minX; x < maxX; x++)
         {
-            if (triangle_isPointIn(x, y, p_triangle))
+            if (triangle_isPointIn(x, y, &triangleXY))
             {
-                mvaddch(y, x, '#');
-            }
-            else 
-            {
-                mvaddch(y, x, '.');
+                framebuffer_setPixel(x, y, '#', 0, p_framebuffer);
             }
         } 
     }
+}
+
+void raster_draw(IN const FRAMEBUFFER_t* p_frambuffer)
+{
+    framebuffer_print(p_frambuffer);
 }

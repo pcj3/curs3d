@@ -1,5 +1,5 @@
 #include "trans.h"
-
+#include <math.h>
 void trans_scaleMatrix44ByVector3(
     IN const MATRIX44_t* pk_matA,
     IN const VECTOR3_t* pk_vecB,
@@ -26,24 +26,30 @@ void trans_scaleMatrix44ByVector3(
 void trans_rotateMatrix44ByVector3(
     IN const MATRIX44_t* pk_matA,
     IN const VECTOR3_t* pk_vecA,
-    IN const R4 k_angle,
+    IN const R4 k_angle, // in radians
     OUT MATRIX44_t* p_matB)
 {
     VECTOR3_t axis;
-    UNUSED(pk_matA);
-    UNUSED(k_angle);
-    UNUSED(p_matB);
     vector3_normalize(pk_vecA, &axis);
-    vector3_print(&axis);
 
-    MATRIX33_t axisMatrix = {0.f, -axis.z, axis.y, \
-                            axis.z, 0.f, -axis.x, \
-                            -axis.y, axis.x, 0.f};
-    matrix33_print(&axisMatrix);
+    const R4 c = cosf(k_angle);
+    const R4 s = sinf(k_angle);
+    const R4 t = 1.f - c;
 
-    MATRIX33_t axisOuterProduct;
-    vector3_outerProduct(&axis, &axis, &axisOuterProduct);
-    matrix33_print(&axisOuterProduct);
+    MATRIX44_t rotMatrix;
+    matrix44_setToZero(&rotMatrix);
+    rotMatrix.e0 = t * axis.x * axis.x + c; 
+    rotMatrix.e1 = t * axis.x * axis.y - s * axis.z;
+    rotMatrix.e2 = t * axis.x * axis.y + s * axis.y;
+    rotMatrix.e4 = t * axis.x * axis.y + s * axis.z;
+    rotMatrix.e5 = t * axis.y * axis.y + c; 
+    rotMatrix.e6 = t * axis.y * axis.z - s * axis.x;
+    rotMatrix.e8 = t * axis.x * axis.y - s * axis.y;
+    rotMatrix.e9 = t * axis.y * axis.z + s * axis.x;    
+    rotMatrix.e10 = t * axis.z * axis.z + c;   
+    rotMatrix.e15 = 1.f;
+
+    matrix44_multiply(&rotMatrix, pk_matA, p_matB);
 }
 
 void trans_multiplyMatrix44ByVector4(

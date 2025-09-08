@@ -25,6 +25,11 @@ typedef float                 R4;     // 4 byte floating point
 typedef double                R8;     // 8 byte floating point
 typedef char                  CH;     // ASCII character
 typedef bool                  BOOL;
+
+typedef U1  COLOR_t;
+typedef U2  DEPTH_t;
+
+
 #define MIN(a, b)   ((a) > (b) ? (b) : (a))
 #define MAX(a, b)   ((a) > (b) ? (a) : (b))
 
@@ -33,5 +38,6 @@ typedef bool                  BOOL;
 
 #define WINDOW_WIDTH    ((U4) (COLS))
 #define WINDOW_HEIGHT   ((U4) (LINES))
-#define PIR4 (3.141592653f)
+
+#define PI_R4 (3.141592653f)
 #endif // AUX_H

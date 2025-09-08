@@ -1,0 +1,60 @@
+#include "framebuffer.h"
+#include "defs.h"
+#include <string.h>
+
+void framebuffer_clear(
+    IN const COLOR_t k_color,
+    OUT FRAMEBUFFER_t* p_framebuffer)
+{
+    p_framebuffer->height = 0;
+    p_framebuffer->width = 0;
+    memset(p_framebuffer->depths, FRAMEBUFFER_MAX_DEPTH, sizeof(DEPTH_t) * FRAMEBUFFER_DEPTHS_SIZE_MAX);
+    memset(p_framebuffer->colors, k_color, sizeof(COLOR_t) * FRAMEBUFFER_DEPTHS_SIZE_MAX);
+}
+
+void framebuffer_setSize(
+    IN U4 width,
+    IN U4 height,
+    OUT FRAMEBUFFER_t* p_framebuffer)
+{
+    p_framebuffer->width = width;
+    p_framebuffer->height = height;
+}
+
+void framebuffer_setPixel(
+    IN const U4 k_x,
+    IN const U4 k_y,
+    IN const COLOR_t k_color,
+    IN const DEPTH_t k_depth,
+    INOUT FRAMEBUFFER_t* p_framebuffer)
+{
+    U4 idx = XY_TO_FRAMEBUFFER_IDX(k_x, k_y, p_framebuffer->width);
+
+    if (k_depth >= p_framebuffer->depths[idx])
+    {
+        return;
+    }
+    p_framebuffer->colors[idx] = k_color;
+    p_framebuffer->depths[idx] = k_depth;
+}
+
+void framebuffer_print(
+    IN const FRAMEBUFFER_t* p_framebuffer)
+{   
+    U4 idx;
+    for (U4 y = 0; y < p_framebuffer->height; y++)
+    {
+        for (U4 x = 0; x < p_framebuffer->width; x++)
+        {   
+            idx = XY_TO_FRAMEBUFFER_IDX(x, y, p_framebuffer->width);
+            COLOR_t color = p_framebuffer->colors[idx];
+            if (!color)
+            {
+                continue;
+            }
+            //attron(COLOR_PAIR(color >> 8));
+            mvaddch((I) y, (I) x, (CH) color);
+        }
+    }
+}
+

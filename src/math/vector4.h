@@ -15,13 +15,14 @@ typedef struct VECTOR4_s {
 void vector4_print(
     IN const VECTOR4_t* pk_vecA);
 
-void vector4_normalize(
-    IN const VECTOR4_t* pk_vecA,
-    OUT VECTOR4_t* p_vecB);
-
-void vector4_outerProduct(
+void vector4_multiplyElementWiseByVector4(
     IN const VECTOR4_t* pk_vecA,
     IN const VECTOR4_t* pk_vecB,
-    OUT MATRIX44_t* p_matA);
+    OUT VECTOR4_t* p_vecC);
+
+void vector4_addElementWiseVector4(
+    IN const VECTOR4_t* pk_vecA,
+    IN const VECTOR4_t* pk_vecB,
+    OUT VECTOR4_t* p_vecC);
 
 #endif // MATH_VECTOR4_H

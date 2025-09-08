@@ -4,14 +4,12 @@
 #include "defs.h"
 #include "vector2.h"
 #include "triangle.h"
+#include "framebuffer.h"
 
-typedef struct FRAMEBUFFER_s {
-    U4 width;
-    U4 height;
-} FRAMEBUFFER_t; 
-
-void draw_raster(
+void raster_triangle(
     IN TRIANGLE_t* p_triangle,
-    OUT FRAMEBUFFER_t* p_frameBuffer);
+    OUT FRAMEBUFFER_t* p_framebuffer);
 
+void raster_draw(
+    IN const FRAMEBUFFER_t* p_framebuffer);
 #endif // DRAW_RASTER_h
