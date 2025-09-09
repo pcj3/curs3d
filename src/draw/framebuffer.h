@@ -37,7 +37,7 @@ void framebuffer_rasterizeTriangle(
     IN TRIANGLE_t* pTriangle,
     OUT FRAMEBUFFER_t* pFramebuffer);
 
-void framebuffer_print(
+void framebuffer_draw(
     IN const FRAMEBUFFER_t* p_framebuffer);
     
 #endif // DRAW_FRAMEBUFFER_h

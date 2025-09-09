@@ -2,7 +2,8 @@
 #include "defs.h"
 #include "thread.h"
 #include "render.h"
-#include "update.h"
+#include "draw.h"
+
 void* thread_ctrl(
     INOUT void* pArg) 
 {
@@ -22,10 +23,10 @@ void* thread_ctrl(
             break;
         }
 
-        if (pThread->job == THREAD_JOB_UPDATE)
-            update_do((UPDATE_DATA_t*)pThread->pData);
-        else
+        if (pThread->job == THREAD_JOB_RENDER)
             render_do((RENDER_DATA_t*)pThread->pData);
+        else
+            draw_do((DRAW_DATA_t*)pThread->pData);
 
         pthread_mutex_lock(&pThread->mutex);
         pThread->done = true;
@@ -67,10 +68,10 @@ void thread_markQuit(
 }
 
 void thread_swapBuffers(
-    OUT UPDATE_DATA_t* pDataUpdate,
-    OUT RENDER_DATA_t* pDataRender) 
+    OUT RENDER_DATA_t* pDataRender,
+    OUT DRAW_DATA_t* pDataDraw) 
 {   
-    FRAMEBUFFER_t* pTempFramebuffer = pDataUpdate->pFramebuffer;
-    pDataUpdate->pFramebuffer = pDataRender->pFramebuffer;
-    pDataRender->pFramebuffer = pTempFramebuffer;
+    FRAMEBUFFER_t* pTempFramebuffer = pDataRender->pFramebuffer;
+    pDataRender->pFramebuffer = pDataDraw->pFramebuffer;
+    pDataDraw->pFramebuffer = pTempFramebuffer;
 }

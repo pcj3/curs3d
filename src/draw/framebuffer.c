@@ -38,7 +38,7 @@ void framebuffer_setPixel(
     p_framebuffer->depths[idx] = k_depth;
 }
 
-void framebuffer_print(
+void framebuffer_draw(
     IN const FRAMEBUFFER_t* p_framebuffer)
 {   
     U4 idx;

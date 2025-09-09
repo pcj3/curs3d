@@ -1,9 +1,8 @@
 #include "defs.h"
-#include "trans.h"
 #include "triangle.h"
 #include "time.h"
 #include "render.h"
-#include "update.h"
+#include "draw.h"
 #include "thread.h"
 
 int main()
@@ -31,7 +30,7 @@ int main()
 
     // Prepare thread data
     FRAMEBUFFER_t pFramebuffer[2];
-    UPDATE_DATA_t dataUpdate = {
+    RENDER_DATA_t dataRender = {
         .pFramebuffer   = &pFramebuffer[0],
         .pTrianglePre   = &trianglePre,
         .pTriangleAfter = &triangleAfter,
@@ -41,22 +40,11 @@ int main()
         .pAngleRotate   = &angleRotate
     };
 
-    RENDER_DATA_t dataRender = {
+    DRAW_DATA_t dataDraw = {
         .pFramebuffer   = &pFramebuffer[1]
     };
 
     // Prepare threads
-    pthread_t threadUpdateId;
-    THREAD_t threadUpdate = {
-        .mutex  = PTHREAD_MUTEX_INITIALIZER,
-        .cond   = PTHREAD_COND_INITIALIZER,
-        .job    = THREAD_JOB_UPDATE,
-        .pData  = &dataUpdate,
-        .ready  = false,
-        .done   = false,
-        .quit   = false,
-    };
-
     pthread_t threadRenderId;
     THREAD_t threadRender = {
         .mutex  = PTHREAD_MUTEX_INITIALIZER,
@@ -68,13 +56,24 @@ int main()
         .quit   = false,
     };
 
+    pthread_t threadDrawId;
+    THREAD_t threadDraw = {
+        .mutex  = PTHREAD_MUTEX_INITIALIZER,
+        .cond   = PTHREAD_COND_INITIALIZER,
+        .job    = THREAD_JOB_DRAW,
+        .pData  = &dataDraw,
+        .ready  = false,
+        .done   = false,
+        .quit   = false,
+    };
+
     // Prepare loop control data
     I pressedKey;
     R8 timeLast = time_getTimeInSec();
 
     // Start threads
-    pthread_create(&threadUpdateId, NULL, thread_ctrl, &threadUpdate);
     pthread_create(&threadRenderId, NULL, thread_ctrl, &threadRender);
+    pthread_create(&threadDrawId, NULL, thread_ctrl, &threadDraw);
 
     // Start main loop
     while (1)
@@ -83,15 +82,15 @@ int main()
         time_waitForFrame(&timeLast);
 
         // Signal threads
-        thread_markReady(&threadUpdate);
         thread_markReady(&threadRender);
+        thread_markReady(&threadDraw);
 
         // Wait till completed
-        thread_waitTillDone(&threadUpdate);
         thread_waitTillDone(&threadRender);
+        thread_waitTillDone(&threadDraw);
 
         // Swap buffers
-        thread_swapBuffers(&dataUpdate, &dataRender);
+        thread_swapBuffers(&dataRender, &dataDraw);
         
         // Do some stuff (to be moved to update)
         angleRotate += angleRotateStep;
@@ -103,10 +102,10 @@ int main()
         }    
     }
     // Exit threads
-    thread_markQuit(&threadUpdate);
     thread_markQuit(&threadRender);
-    pthread_join(threadUpdateId, NULL);
+    thread_markQuit(&threadDraw);
     pthread_join(threadRenderId, NULL);
+    pthread_join(threadDrawId, NULL);
 
     // Close stdscr
     endwin();
