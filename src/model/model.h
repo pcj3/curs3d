@@ -5,8 +5,6 @@
 #include "vector4.h"
 #include "face.h"
 
-#include <stdio.h>
-
 #define MODEL_MAX_NAME 100
 #define MODEL_MAX_VERTICES 10000
 #define MODEL_MAX_FACES 10000

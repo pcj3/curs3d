@@ -3,7 +3,6 @@
 
 #include "defs.h"
 #include "vector4.h"
-#include "framebuffer.h"
 
 typedef struct TRIANGLE_s {
     VECTOR4_t ptA;
@@ -19,7 +18,8 @@ BOOL triangle_isPointIn(
 
 void triangle_transformToPixelXY(
     IN const TRIANGLE_t* pkTriangleIn,
-    IN const FRAMEBUFFER_t* pkFrambuffer,
+    IN const R4 kWidth,
+    IN const R4 kHeight,
     OUT TRIANGLE_t* pTriangleOut);
 
 #endif // MATH_TRIANGLE_h

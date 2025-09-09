@@ -2,6 +2,10 @@
 #define AUX_H
 
 #include "curses.h"
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define IN
 #define OUT
@@ -29,6 +33,7 @@ typedef bool                  BOOL;
 typedef U1  COLOR_t;
 typedef U2  DEPTH_t;
 
+//#define DEBUG
 
 #define MIN(a, b)   ((a) > (b) ? (b) : (a))
 #define MAX(a, b)   ((a) > (b) ? (a) : (b))
@@ -39,7 +44,7 @@ typedef U2  DEPTH_t;
 #define WINDOW_WIDTH    ((U4) (COLS))
 #define WINDOW_HEIGHT   ((U4) (LINES))
 
-#define MAX_FPS (60)
-#define MIN_FRAME_TIME  (1.0 / MAX_FPS) // seconds
+#define FPS_TARGET (60)
+
 #define PI_R4 (3.141592653f)
 #endif // AUX_H

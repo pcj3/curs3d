@@ -30,15 +30,16 @@ BOOL triangle_isPointIn(
 
 void triangle_transformToPixelXY(
     IN const TRIANGLE_t* pkTriangleIn,
-    IN const FRAMEBUFFER_t* pkFramebuffer,
+    IN const R4 kWidth,
+    IN const R4 kHeight,
     OUT TRIANGLE_t* pTriangleOut)
 {
     VECTOR4_t ptA;
     VECTOR4_t ptB;
     VECTOR4_t ptC;
 
-    R4 halfWidth = (R4) (pkFramebuffer->width / 2);
-    R4 halfHeigth = (R4) (pkFramebuffer->height / 2);
+    R4 halfWidth = (R4) (kWidth / 2);
+    R4 halfHeigth = (R4) (kHeight / 2);
 
     VECTOR4_t vecToMult = {halfWidth, -1.f * halfHeigth, 1, 1};
     VECTOR4_t vecToAdd = {halfWidth, halfHeigth, 0, 0};

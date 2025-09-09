@@ -5,6 +5,7 @@
 #define FRAMEBUFFER_COLORS_SIZE_MAX 10000
 
 #include "defs.h"
+#include "triangle.h"
 
 #define FRAMEBUFFER_MAX_DEPTH 0xFF
 #define XY_TO_FRAMEBUFFER_IDX(x, y, width) ((y) * (width) + (x))
@@ -31,6 +32,10 @@ void framebuffer_setPixel(
     IN const COLOR_t k_color,
     IN const DEPTH_t k_depth,
     INOUT FRAMEBUFFER_t* p_framebuffer);
+
+void framebuffer_rasterizeTriangle(
+    IN TRIANGLE_t* pTriangle,
+    OUT FRAMEBUFFER_t* pFramebuffer);
 
 void framebuffer_print(
     IN const FRAMEBUFFER_t* p_framebuffer);

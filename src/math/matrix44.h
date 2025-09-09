@@ -1,8 +1,7 @@
 #ifndef MATH_MAT44_H
 #define MATH_MAT44_H
 
-#include <stdio.h>
-#include <string.h>
+
 #include "defs.h"
 
 typedef struct MATRIX44_s
