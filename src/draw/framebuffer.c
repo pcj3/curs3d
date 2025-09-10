@@ -81,10 +81,6 @@ void framebuffer_rasterizeTriangle(
             {
                 framebuffer_setPixel(x, y, '#', 0, pFramebuffer);
             }
-            // else
-            // {
-            //     framebuffer_setPixel(x, y, '.', 0, pFramebuffer);
-            // }
         }
     }
 }

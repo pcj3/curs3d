@@ -11,10 +11,11 @@ void vector3_normalize(
 {   
     VECTOR3_t tmpVec;
 
-    R4 magnitude = sqrtf(powf(pkVecA->x, 2) + \
-                            powf(pkVecA->y, 2) + \
-                            powf(pkVecA->z, 2));
-    if (magnitude == 0)
+    R4 magnitude = sqrtf(pkVecA->x*pkVecA->x 
+        + pkVecA->y*pkVecA->y 
+        + pkVecA->z*pkVecA->z);
+        
+    if ((fabsf(magnitude) < FLT_EPSILON))
     {
         memcpy(pVecB, pkVecA, sizeof(VECTOR3_t));
         return;
