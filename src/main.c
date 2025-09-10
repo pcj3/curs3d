@@ -7,7 +7,7 @@
 #include "camera.h"
 
 int main()
-{   
+{
     // Init data
     initscr();
     raw();
@@ -26,16 +26,16 @@ int main()
     TRIANGLE_t triangleAfter;
     VECTOR3_t vecTrans = {0.f, 0.f, -2.f};
     VECTOR3_t vecScale = {1.f, 1.f, 1.f};
-    VECTOR3_t vecRotate = {0.f, 1.f, 0.f};
+    VECTOR3_t vecRotate = {0.f, 1.f, 1.f};
     R4 angleRotate = 0.0;
     R4 angleRotateStep = DEG_TO_RAD(1);
 
     // Prepare camera
     CAMERA_t camera;
     camera.fieldOfView= 1.6f;
-    camera.aspectRatio = (((R4) WINDOW_WIDTH) / 2) / WINDOW_HEIGHT;
+    camera.aspectRatio = (((R4) WINDOW_WIDTH) / 2) / (R4) (WINDOW_HEIGHT);
     camera.planeFar = 400.f;;
-    camera.planeNear = 0.2f;
+    camera.planeNear = .2f;
     camera_setView(&camera);
     camera_setProjection(&camera);
     camera_setViewProjected(&camera);
@@ -91,7 +91,7 @@ int main()
 
     // Start main loop
     while (1)
-    {     
+    {
         // Wait for frame on time grid
         time_waitForFrame(&timeLast);
 
@@ -105,15 +105,15 @@ int main()
 
         // Swap buffers
         thread_swapBuffers(&dataRender, &dataDraw);
-        
+
         // Do some stuff (to be moved to update)
         angleRotate += angleRotateStep;
- 
+
         // Exit when requested
         pressedKey = getch();
         if (pressedKey == 'q') {
             break;
-        }    
+        }
     }
     // Exit threads
     thread_markQuit(&threadRender);

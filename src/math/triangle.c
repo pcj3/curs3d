@@ -2,35 +2,36 @@
 #include "triangle.h"
 #include "vector4.h"
 
-#define POINT_IN_TRIANGLE_TOLERANCE (-1e-3f)
+#define POINT_IN_TRIANGLE_TOLERANCE (-1e-3)
 
 
 BOOL triangle_isPointIn(
     IN const U4 kX,
     IN const U4 kY,
     IN const TRIANGLE_t* pkTriangle)
-{   
+{
     VECTOR4_t ptA = pkTriangle->ptA;
     VECTOR4_t ptB = pkTriangle->ptB;
     VECTOR4_t ptC = pkTriangle->ptC;
-    
-    R4 denom = (ptB.y - ptC.y) * (ptA.x - ptC.x) + (ptC.x - ptB.x) * (ptA.y - ptC.y);
-    R4 weightPtA = ((ptB.y - ptC.y) * (kX - ptC.x) + (ptC.x - ptB.x) * (kY - ptC.y)) / denom;
-    R4 weightPtB = ((ptC.y - ptA.y) * (kX - ptC.x) + (ptA.x - ptC.x) * (kY - ptC.y)) / denom;
-    
-    R4 weightPtC = 1.f - weightPtA - weightPtB;
 
-    BOOL resPtA = weightPtA < POINT_IN_TRIANGLE_TOLERANCE;
-    BOOL resPtB = weightPtB < POINT_IN_TRIANGLE_TOLERANCE;
-    BOOL resPtC = weightPtC < POINT_IN_TRIANGLE_TOLERANCE;
-    return (resPtA == resPtB) && (resPtB == resPtC);
+
+    R8 denom = (ptB.y - ptC.y) * (ptA.x - ptC.x) + (ptC.x - ptB.x) * (ptA.y - ptC.y);
+    R8 weightPtA = ((ptB.y - ptC.y) * ((R8) kX - ptC.x) + (ptC.x - ptB.x) * ((R8) kY - ptC.y)) / denom;
+    R8 weightPtB = ((ptC.y - ptA.y) * ((R8) kX - ptC.x) + (ptA.x - ptC.x) * ((R8) kY - ptC.y)) / denom;
+
+    R8 weightPtC = 1. - weightPtA - weightPtB;
+
+    BOOL resPtA = weightPtA >= POINT_IN_TRIANGLE_TOLERANCE;
+    BOOL resPtB = weightPtB >= POINT_IN_TRIANGLE_TOLERANCE;
+    BOOL resPtC = weightPtC >= POINT_IN_TRIANGLE_TOLERANCE;
+    return resPtA && resPtB && resPtC;
 
 }
 
 void triangle_transformToPixelXY(
     IN const TRIANGLE_t* pkTriangleIn,
-    IN const R4 kWidth,
-    IN const R4 kHeight,
+    IN const U4 kWidth,
+    IN const U4 kHeight,
     OUT TRIANGLE_t* pTriangleOut)
 {
 
@@ -40,23 +41,23 @@ void triangle_transformToPixelXY(
     VECTOR4_t vecToMult = {halfWidth, -halfHeight, 1, 1};
     VECTOR4_t vecToAdd = {halfWidth, halfHeight, 0, 0};
 
-    vector4_multiplyElementWiseByVector4(&pkTriangleIn->ptA, 
-        &vecToMult, 
+    vector4_multiplyElementWiseByVector4(&pkTriangleIn->ptA,
+        &vecToMult,
         &pTriangleOut->ptA);
-    vector4_multiplyElementWiseByVector4(&pkTriangleIn->ptB, 
-        &vecToMult, 
+    vector4_multiplyElementWiseByVector4(&pkTriangleIn->ptB,
+        &vecToMult,
         &pTriangleOut->ptB);
-    vector4_multiplyElementWiseByVector4(&pkTriangleIn->ptC, 
-        &vecToMult, 
+    vector4_multiplyElementWiseByVector4(&pkTriangleIn->ptC,
+        &vecToMult,
         &pTriangleOut->ptC);
-    
+
     vector4_addElementWiseVector4(&pTriangleOut->ptA,
-         &vecToAdd, 
+         &vecToAdd,
          &pTriangleOut->ptA);
-    vector4_addElementWiseVector4(&pTriangleOut->ptB, 
+    vector4_addElementWiseVector4(&pTriangleOut->ptB,
         &vecToAdd,
         &pTriangleOut->ptB);
-    vector4_addElementWiseVector4(&pTriangleOut->ptC, 
-        &vecToAdd, 
+    vector4_addElementWiseVector4(&pTriangleOut->ptC,
+        &vecToAdd,
         &pTriangleOut->ptC);
 }

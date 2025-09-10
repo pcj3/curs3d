@@ -40,12 +40,12 @@ void framebuffer_setPixel(
 
 void framebuffer_draw(
     IN const FRAMEBUFFER_t* p_framebuffer)
-{   
+{
     U4 idx;
     for (U4 y = 0; y < p_framebuffer->height; y++)
     {
         for (U4 x = 0; x < p_framebuffer->width; x++)
-        {   
+        {
             idx = XY_TO_FRAMEBUFFER_IDX(x, y, p_framebuffer->width);
             COLOR_t color = p_framebuffer->colors[idx];
             if (!color)
@@ -53,7 +53,7 @@ void framebuffer_draw(
                 continue;
             }
             //attron(COLOR_PAIR(color >> 8));
-            mvaddch((I) y, (I) x, (CH) color);
+            mvaddch((I) y, (I) x, color);
         }
     }
 }
@@ -61,18 +61,18 @@ void framebuffer_draw(
 void framebuffer_rasterizeTriangle(
     IN TRIANGLE_t* pTriangle,
     OUT FRAMEBUFFER_t* pFramebuffer)
-{   
+{
     TRIANGLE_t triangleXY;
-    triangle_transformToPixelXY(pTriangle, 
-        pFramebuffer->width, 
+    triangle_transformToPixelXY(pTriangle,
+        pFramebuffer->width,
         pFramebuffer->height,
         &triangleXY);
 
     U4 minY = (U4) MAX(0, MIN(triangleXY.ptA.y, MIN(triangleXY.ptB.y, triangleXY.ptC.y)));
     U4 minX = (U4) MAX(0, MIN(triangleXY.ptA.x, MIN(triangleXY.ptB.x, triangleXY.ptC.x)));
-    U4 maxY = (U4) MIN(pFramebuffer->height, ceil(MAX(triangleXY.ptA.y, MAX(triangleXY.ptB.y, triangleXY.ptC.y)))+1);
-    U4 maxX = (U4) MIN(pFramebuffer->width, ceil(MAX(triangleXY.ptA.x, MAX(triangleXY.ptB.x, triangleXY.ptC.x)))+1);
-    
+    U4 maxY = (U4) MIN(pFramebuffer->height, (U4) MAX(triangleXY.ptA.y, MAX(triangleXY.ptB.y, triangleXY.ptC.y))+1);
+    U4 maxX = (U4) MIN(pFramebuffer->width, (U4) MAX(triangleXY.ptA.x, MAX(triangleXY.ptB.x, triangleXY.ptC.x))+1);
+
     for (U4 y = minY; y < maxY; y++)
     {
         for (U4 x = minX; x < maxX; x++)
@@ -81,7 +81,11 @@ void framebuffer_rasterizeTriangle(
             {
                 framebuffer_setPixel(x, y, '#', 0, pFramebuffer);
             }
-        } 
+            else
+            {
+                framebuffer_setPixel(x, y, '.', 0, pFramebuffer);
+            }
+        }
     }
 }
 

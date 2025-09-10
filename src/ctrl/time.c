@@ -1,14 +1,16 @@
 #include <unistd.h>
 #include <sys/time.h>
+#include <time.h>
 
 #include "defs.h"
 #include "time.h"
 
-R8 time_getTimeInSec() 
+
+R8 time_getTimeInSec()
 {
     struct timeval tv;
     gettimeofday(&tv, NULL);
-    return (R8) (tv.tv_sec + tv.tv_usec * US_TO_S);
+    return (R8) tv.tv_sec + (R8) tv.tv_usec * US_TO_S;
 }
 
 void time_waitForFrame(IN R8* pTimeLast)

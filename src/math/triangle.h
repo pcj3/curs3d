@@ -18,8 +18,8 @@ BOOL triangle_isPointIn(
 
 void triangle_transformToPixelXY(
     IN const TRIANGLE_t* pkTriangleIn,
-    IN const R4 kWidth,
-    IN const R4 kHeight,
+    IN const U4 kWidth,
+    IN const U4 kHeight,
     OUT TRIANGLE_t* pTriangleOut);
 
 #endif // MATH_TRIANGLE_h

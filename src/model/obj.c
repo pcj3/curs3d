@@ -11,20 +11,20 @@
 static void obj_setFaceAttrType(
     IN CH* word,
     OUT FACE_ATTR_t* p_faceAttr)
-{   
-    if (!strchr(word, '/')) 
+{
+    if (!strchr(word, '/'))
     {
         *p_faceAttr = FACE_ATTR_VERTICES;
-    } 
-    else if (strstr(word, "//")) 
+    }
+    else if (strstr(word, "//"))
     {
         *p_faceAttr = FACE_ATTR_VERTICES_NORMALS;
-    } 
-    else if (strchr(word, '/') == strrchr(word, '/')) 
+    }
+    else if (strchr(word, '/') == strrchr(word, '/'))
     {
         *p_faceAttr = FACE_ATTR_VERTICES_TEXTURES;
-    } 
-    else 
+    }
+    else
     {
         *p_faceAttr = FACE_ATTR_VERTICES_TEXTURES_NORMALS;
     }
@@ -48,11 +48,14 @@ static void obj_addAttrsToFace(
     {
     case FACE_ATTR_VERTICES_TEXTURES:
         p_face->idxTextures[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+        break;
     case FACE_ATTR_VERTICES_NORMALS:
         p_face->idxNormals[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+        break;
     case FACE_ATTR_VERTICES_TEXTURES_NORMALS:
         p_face->idxTextures[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
         p_face->idxNormals[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+        break;
     case FACE_ATTR_VERTICES:
         FALLTHROUGH;
     default:
@@ -101,7 +104,7 @@ void obj_read_model(
 
         // Check if vertex line type
         if (!strcmp(word, "v"))
-        {   
+        {
             p_vertices->x = (R4) atof(strtok_r(NULL, " ", &p_word));
             p_vertices->y = (R4) atof(strtok_r(NULL, " ", &p_word));
             p_vertices->z = (R4) atof(strtok_r(NULL, " ", &p_word));
@@ -110,7 +113,7 @@ void obj_read_model(
             {
                 p_vertices->w = (R4) atof(word);
             }
-            else 
+            else
             {
                 p_vertices->w = 1.f;
             }
@@ -119,7 +122,7 @@ void obj_read_model(
         }
         // Check if texture line type
         else if (!strcmp(word, "vt"))
-        {   
+        {
             p_textures->x = (R4) atof(strtok_r(NULL, " ", &p_word));
             p_textures->y = (R4) atof(strtok_r(NULL, " ", &p_word));
             word = strtok_r(NULL, " ", &p_word);
@@ -132,7 +135,7 @@ void obj_read_model(
         }
         // Check if normal line type
         else if (!strcmp(word, "vn"))
-        {   
+        {
             p_normals->x = (R4) atof(strtok_r(NULL, " ", &p_word));
             p_normals->y = (R4) atof(strtok_r(NULL, " ", &p_word));
             p_normals->z = (R4) atof(strtok_r(NULL, " ", &p_word));
@@ -141,7 +144,7 @@ void obj_read_model(
         }
         // Check if face line type
         else if (!strcmp(word, "f"))
-        {   
+        {
             word = strtok_r(NULL, " ", &p_word);
             U1 faceIdx = 0;
             while (word != NULL)
@@ -153,7 +156,7 @@ void obj_read_model(
             p_faces->numberVertices = faceIdx;
             p_model->numberFaces++;
             p_faces++;
-            
+
         }
         // Rest of line types is not supported
         else

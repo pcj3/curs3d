@@ -1,8 +1,8 @@
 #ifndef DRAW_FRAMEBUFFER_h
 #define DRAW_FRAMEBUFFER_h
 
-#define FRAMEBUFFER_DEPTHS_SIZE_MAX 10000
-#define FRAMEBUFFER_COLORS_SIZE_MAX 10000
+#define FRAMEBUFFER_DEPTHS_SIZE_MAX 20000
+#define FRAMEBUFFER_COLORS_SIZE_MAX 20000
 
 #include "defs.h"
 #include "triangle.h"
@@ -15,7 +15,7 @@ typedef struct FRAMEBUFFER_s {
     U4 height;
     COLOR_t colors[FRAMEBUFFER_COLORS_SIZE_MAX];
     DEPTH_t depths[FRAMEBUFFER_DEPTHS_SIZE_MAX];
-} FRAMEBUFFER_t; 
+} FRAMEBUFFER_t;
 
 void framebuffer_clear(
     IN const COLOR_t k_color,
@@ -39,5 +39,5 @@ void framebuffer_rasterizeTriangle(
 
 void framebuffer_draw(
     IN const FRAMEBUFFER_t* p_framebuffer);
-    
+
 #endif // DRAW_FRAMEBUFFER_h

@@ -2,8 +2,6 @@
 #define MATH_VECTOR4_H
 
 #include "defs.h"
-#include "matrix44.h"
-
 
 typedef struct VECTOR4_s {
     R4 x;
@@ -21,5 +19,8 @@ void vector4_addElementWiseVector4(
     IN const VECTOR4_t* pkVecA,
     IN const VECTOR4_t* pkVecB,
     OUT VECTOR4_t* pVecC);
+
+void vector4_divideByW(
+    INOUT VECTOR4_t* pVec);
 
 #endif // MATH_VECTOR4_H
