@@ -38,26 +38,6 @@ void framebuffer_setPixel(
     p_framebuffer->depths[idx] = k_depth;
 }
 
-void framebuffer_draw(
-    IN const FRAMEBUFFER_t* p_framebuffer)
-{
-    U4 idx;
-    for (U4 y = 0; y < p_framebuffer->height; y++)
-    {
-        for (U4 x = 0; x < p_framebuffer->width; x++)
-        {
-            idx = XY_TO_FRAMEBUFFER_IDX(x, y, p_framebuffer->width);
-            COLOR_t color = p_framebuffer->colors[idx];
-            if (!color)
-            {
-                continue;
-            }
-            //attron(COLOR_PAIR(color >> 8));
-            mvaddch((I) y, (I) x, color);
-        }
-    }
-}
-
 void framebuffer_rasterizeTriangle(
     IN TRIANGLE_t* pTriangle,
     OUT FRAMEBUFFER_t* pFramebuffer)
@@ -79,7 +59,7 @@ void framebuffer_rasterizeTriangle(
         {
             if (triangle_isPointIn(x, y, &triangleXY))
             {
-                framebuffer_setPixel(x, y, '#', 0, pFramebuffer);
+                framebuffer_setPixel(x, y, ' ', 0, pFramebuffer);
             }
         }
     }

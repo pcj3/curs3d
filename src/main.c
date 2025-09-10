@@ -14,6 +14,8 @@ int main()
     raw();
     noecho();
     curs_set(0);
+    start_color(); 
+    init_pair(2, COLOR_GREEN, COLOR_WHITE);
     nodelay(stdscr, TRUE);
 
     // Prepare test data
@@ -22,7 +24,7 @@ int main()
     obj_read_model(kModelObj, &model);
     VECTOR3_t vecTrans = {0.f, 0.f, -10.f};
     VECTOR3_t vecScale = {1.f, 1.f, 1.f};
-    VECTOR3_t vecRotate = {1.f, 0.f, 0.f};
+    VECTOR3_t vecRotate = {0.0f, 1.f, 0.f};
     R4 angleRotate = 0.0;
     R4 angleRotateStep = DEG_TO_RAD(1);
 

@@ -8,10 +8,7 @@ void render_do(INOUT RENDER_DATA_t* pData)
     // Set transformation matrix to identity
     matrix44_setToIdentity(&matTrans);
 
-    // Scale
-    matrix44_scaleByVector3(&matTrans,
-        pData->pVecScale,
-        &matTrans);
+
 
     // Translate
     matrix44_translateByVector3(&matTrans,
@@ -24,6 +21,11 @@ void render_do(INOUT RENDER_DATA_t* pData)
         *pData->pAngleRotate,
         &matTrans);
 
+    // Scale
+    matrix44_scaleByVector3(&matTrans,
+        pData->pVecScale,
+        &matTrans);
+        
     // Apply view projected matrix
     matrix44_multiply(
         pData->pMatViewProjected,
