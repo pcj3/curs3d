@@ -65,10 +65,11 @@ static void obj_addAttrsToFace(
 }
 
 void obj_read_model(
+    IN const CH* pkModelFileName,
     OUT MODEL_t* p_model)
 {
     // Open obj file
-    FILE* file = fopen("res/cow.obj", "r");
+    FILE* file = fopen(pkModelFileName, "r");
     if (file == NULL)
     {
         printf("Couldn't open obj file.\n");

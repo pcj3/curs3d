@@ -5,6 +5,7 @@
 #include "draw.h"
 #include "thread.h"
 #include "camera.h"
+#include "obj.h"
 
 int main()
 {
@@ -16,23 +17,18 @@ int main()
     nodelay(stdscr, TRUE);
 
     // Prepare test data
-    R4 size = 1.f;
-    TRIANGLE_t trianglePre = {
-        .ptA = {-size, size, 0, 1},
-        .ptB = {size, size, 0, 1},
-        .ptC = {0, -size, 0, 1}
-    };
-
-    TRIANGLE_t triangleAfter;
-    VECTOR3_t vecTrans = {0.f, 0.f, -2.f};
+    MODEL_t model;
+    const CH kModelObj[] = "res/cow.obj";
+    obj_read_model(kModelObj, &model);
+    VECTOR3_t vecTrans = {0.f, 0.f, -10.f};
     VECTOR3_t vecScale = {1.f, 1.f, 1.f};
-    VECTOR3_t vecRotate = {0.f, 1.f, 1.f};
+    VECTOR3_t vecRotate = {1.f, 0.f, 0.f};
     R4 angleRotate = 0.0;
     R4 angleRotateStep = DEG_TO_RAD(1);
 
     // Prepare camera
     CAMERA_t camera;
-    camera.fieldOfView= 1.6f;
+    camera.fieldOfView= 1.2f;
     camera.aspectRatio = ((R4) WINDOW_WIDTH / 2.f) / (R4) (WINDOW_HEIGHT);
     camera.planeFar = 400.f;;
     camera.planeNear = .2f;
@@ -46,8 +42,7 @@ int main()
     RENDER_DATA_t dataRender = {
         .pFramebuffer       = &pFramebuffer[0],
         .pMatViewProjected  = &camera.matViewProjected,
-        .pTrianglePre       = &trianglePre,
-        .pTriangleAfter     = &triangleAfter,
+        .pModel             = &model,
         .pVecTrans          = &vecTrans,
         .pVecScale          = &vecScale,
         .pVecRotate         = &vecRotate,

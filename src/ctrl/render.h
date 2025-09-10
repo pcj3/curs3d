@@ -6,12 +6,12 @@
 #include "triangle.h"
 #include "matrix44.h"
 #include "vector3.h"
+#include "model.h"
 
 typedef struct RENDER_DATA_s {
     FRAMEBUFFER_t*  pFramebuffer;
     MATRIX44_t*     pMatViewProjected;
-    TRIANGLE_t*     pTrianglePre;
-    TRIANGLE_t*     pTriangleAfter;
+    MODEL_t*        pModel;
     VECTOR3_t*      pVecTrans;
     VECTOR3_t*      pVecScale;
     VECTOR3_t*      pVecRotate;

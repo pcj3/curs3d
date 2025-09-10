@@ -1,5 +1,6 @@
 #include "defs.h"
 #include "render.h"
+#include "face.h"
 
 void render_do(INOUT RENDER_DATA_t* pData)
 {
@@ -8,9 +9,9 @@ void render_do(INOUT RENDER_DATA_t* pData)
     matrix44_setToIdentity(&matTrans);
 
     // Scale
-    // matrix44_scaleByVector3(&matTrans,
-    //     pData->pVecScale,
-    //     &matTrans);
+    matrix44_scaleByVector3(&matTrans,
+        pData->pVecScale,
+        &matTrans);
 
     // Translate
     matrix44_translateByVector3(&matTrans,
@@ -28,28 +29,40 @@ void render_do(INOUT RENDER_DATA_t* pData)
         pData->pMatViewProjected,
         &matTrans,
         &matTrans);
-
-    // Apply transfomation to triangle
-    matrix44_multiplyByVector4(&matTrans,
-        &pData->pTrianglePre->ptA,
-        &pData->pTriangleAfter->ptA);
-    matrix44_multiplyByVector4(&matTrans,
-        &pData->pTrianglePre->ptB,
-        &pData->pTriangleAfter->ptB);
-    matrix44_multiplyByVector4(&matTrans,
-        &pData->pTrianglePre->ptC,
-        &pData->pTriangleAfter->ptC);
-
-    // Distance scaling
-    vector4_divideByW(&pData->pTriangleAfter->ptA);
-    vector4_divideByW(&pData->pTriangleAfter->ptB);
-    vector4_divideByW(&pData->pTriangleAfter->ptC);
-
-    // Rasterize
+    
+    // Clear buffer
     framebuffer_clear(0, pData->pFramebuffer);
     framebuffer_setSize(WINDOW_WIDTH,
         WINDOW_HEIGHT,
         pData->pFramebuffer);
-    framebuffer_rasterizeTriangle(pData->pTriangleAfter,
-        pData->pFramebuffer);
+    
+    // Render each face
+    TRIANGLE_t triangle;
+    FACE_t* pFace = pData->pModel->faces;
+    for (U4 i = 0; i < pData->pModel->numberFaces; i++, pFace++)
+    {
+        triangle.ptA = pData->pModel->vertices[pFace->idxVertices[0]];
+        triangle.ptB = pData->pModel->vertices[pFace->idxVertices[1]];
+        triangle.ptC = pData->pModel->vertices[pFace->idxVertices[2]];
+    
+        // Apply transfomation to triangle
+        matrix44_multiplyByVector4(&matTrans,
+            &triangle.ptA,
+            &triangle.ptA);
+        matrix44_multiplyByVector4(&matTrans,
+            &triangle.ptB,
+            &triangle.ptB);
+        matrix44_multiplyByVector4(&matTrans,
+            &triangle.ptC,
+            &triangle.ptC);
+
+        // Distance scaling
+        vector4_divideByW(&triangle.ptA);
+        vector4_divideByW(&triangle.ptB);
+        vector4_divideByW(&triangle.ptC);
+
+        // Rasterize
+        framebuffer_rasterizeTriangle(&triangle,
+            pData->pFramebuffer);
+    }
 }
