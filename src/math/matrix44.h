@@ -8,10 +8,11 @@
 
 /*
     Matrix 4x4 defined with column-wise order
-            | e00 e10 e20 e30 |
-    mat44 = | e01 e11 e21 e31 |
-            | e02 e12 e22 e32 |
-            | e03 e13 e23 e33 |
+
+        | e00 e10 e20 e30 |
+        | e01 e11 e21 e31 |
+        | e02 e12 e22 e32 |
+        | e03 e13 e23 e33 |
 */
 typedef struct MATRIX44_s
 {
@@ -61,5 +62,8 @@ void matrix44_multiplyByVector4(
     IN const MATRIX44_t* pkMatA,
     IN const VECTOR4_t* pkVecB,
     OUT VECTOR4_t* pVecC);
+
+void matrix44_print(
+    IN const MATRIX44_t* pkMat);
 
 #endif // MATH_MAT44_H

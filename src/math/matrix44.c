@@ -62,14 +62,17 @@ void matrix44_scaleByVector3(
     tmpMat.e01 = pkMatA->e01 * pkVecB->x;
     tmpMat.e02 = pkMatA->e02 * pkVecB->x;
     tmpMat.e03 = pkMatA->e03 * pkVecB->x;
+
     tmpMat.e10 = pkMatA->e10 * pkVecB->y;
     tmpMat.e11 = pkMatA->e11 * pkVecB->y;
     tmpMat.e12 = pkMatA->e12 * pkVecB->y;
     tmpMat.e13 = pkMatA->e13 * pkVecB->y;
+
     tmpMat.e20 = pkMatA->e20 * pkVecB->z;
     tmpMat.e21 = pkMatA->e21 * pkVecB->z;
     tmpMat.e22 = pkMatA->e22 * pkVecB->z;
     tmpMat.e23 = pkMatA->e23 * pkVecB->z;
+
     tmpMat.e30 = pkMatA->e30;
     tmpMat.e31 = pkMatA->e31;
     tmpMat.e32 = pkMatA->e32;
@@ -91,8 +94,6 @@ void matrix44_rotateByVector3(
     const R4 s = sinf(kAngle);
     const R4 t = 1.f - c;
 
-    MATRIX44_t rotMatrix;
-
     R4 txy = t * axis.x * axis.y;
     R4 txz = t * axis.x * axis.z;
     R4 tyz = t * axis.y * axis.z;
@@ -100,7 +101,6 @@ void matrix44_rotateByVector3(
     R4 sx = s * axis.x;
     R4 sy = s * axis.y;
     R4 sz = s * axis.z;
-
 
     /*
     Rodrigues rotation matrix formulation
@@ -111,24 +111,37 @@ void matrix44_rotateByVector3(
         |   0           0           0       1 |
 
     */
-    rotMatrix.e00 = t * axis.x * axis.x + c;
-    rotMatrix.e01 = txy + sz;
-    rotMatrix.e02 = txz - sy;
-    rotMatrix.e03 = 0.f;
-    rotMatrix.e10 = txy - sz;
-    rotMatrix.e11 = t * axis.y * axis.y + c;
-    rotMatrix.e12 = tyz + sx;
-    rotMatrix.e13 = 0.f;
-    rotMatrix.e20 = txz + sy;
-    rotMatrix.e21 = tyz - sx;
-    rotMatrix.e22 = t * axis.z * axis.z + c;
-    rotMatrix.e23 = 0.f;
-    rotMatrix.e30 = 0.f;
-    rotMatrix.e31 = 0.f;
-    rotMatrix.e32 = 0.f;
-    rotMatrix.e33 = 1.f;
+    R4 r00 = r00 = t * axis.x * axis.x + c;
+    R4 r01 = txy + sz;
+    R4 r02 = txz - sy;
+    R4 r10 = txy - sz;
+    R4 r11 = t * axis.y * axis.y + c;
+    R4 r12 = tyz + sx;
+    R4 r20 = txz + sy;
+    R4 r21 = tyz - sx;
+    R4 r22 = t * axis.z * axis.z + c;
 
-    matrix44_multiply(pkMatA, &rotMatrix, pMatB);
+    R4 e00 = pkMatA->e00 * r00 + pkMatA->e10 * r01 + pkMatA->e20 * r02;
+    R4 e01 = pkMatA->e01 * r00 + pkMatA->e11 * r01 + pkMatA->e21 * r02;
+    R4 e02 = pkMatA->e02 * r00 + pkMatA->e12 * r01 + pkMatA->e22 * r02;
+    R4 e03 = pkMatA->e03 * r00 + pkMatA->e13 * r01 + pkMatA->e23 * r02;
+    R4 e10 = pkMatA->e00 * r10 + pkMatA->e10 * r11 + pkMatA->e20 * r12;
+    R4 e11 = pkMatA->e01 * r10 + pkMatA->e11 * r11 + pkMatA->e21 * r12;
+    R4 e12 = pkMatA->e02 * r10 + pkMatA->e12 * r11 + pkMatA->e22 * r12;
+    R4 e13 = pkMatA->e03 * r10 + pkMatA->e13 * r11 + pkMatA->e23 * r12;
+    pMatB->e20 = pkMatA->e00 * r20 + pkMatA->e10 * r21 + pkMatA->e20 * r22;
+    pMatB->e21 = pkMatA->e01 * r20 + pkMatA->e11 * r21 + pkMatA->e21 * r22;
+    pMatB->e22 = pkMatA->e02 * r20 + pkMatA->e12 * r21 + pkMatA->e22 * r22;
+    pMatB->e23 = pkMatA->e03 * r20 + pkMatA->e13 * r21 + pkMatA->e23 * r22;
+    pMatB->e00 = e00;
+    pMatB->e01 = e01;
+    pMatB->e02 = e02;
+    pMatB->e03 = e03;
+    pMatB->e10 = e10;
+    pMatB->e11 = e11;
+    pMatB->e12 = e12;
+    pMatB->e13 = e13;
+
 }
 
 void matrix44_translateByVector3(
@@ -160,4 +173,14 @@ void matrix44_multiplyByVector4(
     tmpVec.w = pkMatA->e03 * pkVecB->x + pkMatA->e13 * pkVecB->y + pkMatA->e23 * pkVecB->z + pkMatA->e33 * pkVecB->w;
 
     *pVecC = tmpVec;
+}
+
+
+void matrix44_print(
+    IN const MATRIX44_t* pkMat)
+{
+    printf("| %.4f %.4f %.4f %.4f |\n", pkMat->e00, pkMat->e10, pkMat->e20, pkMat->e30);
+    printf("| %.4f %.4f %.4f %.4f |\n", pkMat->e01, pkMat->e11, pkMat->e21, pkMat->e31);
+    printf("| %.4f %.4f %.4f %.4f |\n", pkMat->e02, pkMat->e12, pkMat->e22, pkMat->e32);
+    printf("| %.4f %.4f %.4f %.4f |\n", pkMat->e03, pkMat->e13, pkMat->e23, pkMat->e33);
 }
