@@ -16,9 +16,17 @@ void trans_rotateMatrix44ByVector3(
     IN const R4 kAngle,
     OUT MATRIX44_t* pMatB);
 
+void trans_tranlateMatrix44ByVector3(
+    IN const MATRIX44_t* pkMatA,
+    IN const VECTOR3_t* pkVecA,
+    OUT MATRIX44_t* pMatB);
+
 void trans_multiplyMatrix44ByVector4(
     IN const MATRIX44_t* pkMatA,
     IN const VECTOR4_t* pkVecB,
     OUT VECTOR4_t* pVecC);
+
+void trans_divideVector4ByW(
+    INOUT VECTOR4_t* pVec);
 
 #endif // MATH_TRANS_H

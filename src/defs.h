@@ -47,4 +47,6 @@ typedef U2  DEPTH_t;
 #define FPS_TARGET (60)
 
 #define PI_R4 (3.141592653f)
+#define DEG_TO_RAD(X) ((X) * PI_R4 / 180.0f)
+
 #endif // AUX_H

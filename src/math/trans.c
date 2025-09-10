@@ -8,22 +8,22 @@ void trans_scaleMatrix44ByVector3(
 {   
     MATRIX44_t tmpMat;
 
-    tmpMat.e0 = pkMatA->e0 * pkVecB->x;
-    tmpMat.e1 = pkMatA->e1 * pkVecB->x;
-    tmpMat.e2 = pkMatA->e2 * pkVecB->x;
-    tmpMat.e3 = pkMatA->e3 * pkVecB->x;
-    tmpMat.e4 = pkMatA->e4 * pkVecB->y;
-    tmpMat.e5 = pkMatA->e5 * pkVecB->y;
-    tmpMat.e6 = pkMatA->e6 * pkVecB->y;
-    tmpMat.e7 = pkMatA->e7 * pkVecB->y;
-    tmpMat.e8 = pkMatA->e8 * pkVecB->z;
-    tmpMat.e9 = pkMatA->e9 * pkVecB->z;
-    tmpMat.e10 = pkMatA->e10 * pkVecB->z;
-    tmpMat.e11 = pkMatA->e11 * pkVecB->z;
-    tmpMat.e12 = pkMatA->e12;
-    tmpMat.e13 = pkMatA->e13;
-    tmpMat.e14 = pkMatA->e14;
-    tmpMat.e15 = pkMatA->e15;
+    tmpMat.e00 = pkMatA->e00 * pkVecB->x;
+    tmpMat.e01 = pkMatA->e01 * pkVecB->x;
+    tmpMat.e02 = pkMatA->e02 * pkVecB->x;
+    tmpMat.e03 = pkMatA->e03 * pkVecB->x;
+    tmpMat.e10 = pkMatA->e10 * pkVecB->y;
+    tmpMat.e11 = pkMatA->e11 * pkVecB->y;
+    tmpMat.e12 = pkMatA->e12 * pkVecB->y;
+    tmpMat.e13 = pkMatA->e13 * pkVecB->y;
+    tmpMat.e20 = pkMatA->e20 * pkVecB->z;
+    tmpMat.e21 = pkMatA->e21 * pkVecB->z;
+    tmpMat.e22 = pkMatA->e22 * pkVecB->z;
+    tmpMat.e23 = pkMatA->e23 * pkVecB->z;
+    tmpMat.e30 = pkMatA->e30;
+    tmpMat.e31 = pkMatA->e31;
+    tmpMat.e32 = pkMatA->e32;
+    tmpMat.e33 = pkMatA->e33;
 
     *pMatC = tmpMat;
 }
@@ -51,27 +51,43 @@ void trans_rotateMatrix44ByVector3(
     R4 sy = s * axis.y;
     R4 sz = s * axis.z;
 
-    rotMatrix.e0 = t * axis.x * axis.x + c; 
-    rotMatrix.e1 = txy - sz;
-    rotMatrix.e2 = txz + sy;
-    rotMatrix.e3 = 0.f;
+    rotMatrix.e00 = t * axis.x * axis.x + c; 
+    rotMatrix.e01 = txy + sz;
+    rotMatrix.e02 = txz - sy;
+    rotMatrix.e03 = 0.f;
 
-    rotMatrix.e4 = txy + sz;
-    rotMatrix.e5 = t * axis.y * axis.y + c; 
-    rotMatrix.e6 = tyz - sx;
-    rotMatrix.e7 = 0.f;
-
-    rotMatrix.e8 = txz - sy;
-    rotMatrix.e9 = tyz + sx;    
-    rotMatrix.e10 = t * axis.z * axis.z + c;
-    rotMatrix.e11 = 0.f;
-    
-    rotMatrix.e12 = 0.f;
+    rotMatrix.e10 = txy - sz;
+    rotMatrix.e11 = t * axis.y * axis.y + c; 
+    rotMatrix.e12 = tyz + sx;
     rotMatrix.e13 = 0.f;
-    rotMatrix.e14 = 0.f;
-    rotMatrix.e15 = 1.f;
+
+    rotMatrix.e20 = txz + sy;
+    rotMatrix.e21 = tyz - sx;    
+    rotMatrix.e22 = t * axis.z * axis.z + c;
+    rotMatrix.e23 = 0.f;
+    
+    rotMatrix.e30 = 0.f;
+    rotMatrix.e31 = 0.f;
+    rotMatrix.e32 = 0.f;
+    rotMatrix.e33 = 1.f;
 
     matrix44_multiply(&rotMatrix, pkMatA, pMatB);
+}
+
+void trans_tranlateMatrix44ByVector3(
+    IN const MATRIX44_t* pkMatA,
+    IN const VECTOR3_t* pkVecA,
+    OUT MATRIX44_t* pMatB)
+{   
+    MATRIX44_t tmpMat;
+
+    tmpMat = *pkMatA;
+    tmpMat.e30 += pkMatA->e00 * pkVecA->x + pkMatA->e10 * pkVecA->y + pkMatA->e20 * pkVecA->z;
+    tmpMat.e31 += pkMatA->e01 * pkVecA->x + pkMatA->e11 * pkVecA->y + pkMatA->e21 * pkVecA->z;
+    tmpMat.e32 += pkMatA->e02 * pkVecA->x + pkMatA->e12 * pkVecA->y + pkMatA->e22 * pkVecA->z;
+    tmpMat.e33 += pkMatA->e03 * pkVecA->x + pkMatA->e13 * pkVecA->y + pkMatA->e23 * pkVecA->z;
+
+    *pMatB = tmpMat;
 }
 
 void trans_multiplyMatrix44ByVector4(
@@ -81,10 +97,21 @@ void trans_multiplyMatrix44ByVector4(
 {
     VECTOR4_t tmpVec;
 
-    tmpVec.x = pkMatA->e0 * pkVecB->x + pkMatA->e1 * pkVecB->y + pkMatA->e2 * pkVecB->z + pkMatA->e3 * pkVecB->w;
-    tmpVec.y = pkMatA->e4 * pkVecB->x + pkMatA->e5 * pkVecB->y + pkMatA->e6 * pkVecB->z + pkMatA->e7 * pkVecB->w;
-    tmpVec.z = pkMatA->e8 * pkVecB->x + pkMatA->e9 * pkVecB->y + pkMatA->e10 * pkVecB->z + pkMatA->e11 * pkVecB->w;
-    tmpVec.w = pkMatA->e12 * pkVecB->x + pkMatA->e13 * pkVecB->y + pkMatA->e14 * pkVecB->z + pkMatA->e15 * pkVecB->w;
+    tmpVec.x = pkMatA->e00 * pkVecB->x + pkMatA->e10 * pkVecB->y + pkMatA->e20 * pkVecB->z + pkMatA->e30 * pkVecB->w;
+    tmpVec.y = pkMatA->e01 * pkVecB->x + pkMatA->e11 * pkVecB->y + pkMatA->e21 * pkVecB->z + pkMatA->e31 * pkVecB->w;
+    tmpVec.z = pkMatA->e02 * pkVecB->x + pkMatA->e12 * pkVecB->y + pkMatA->e22 * pkVecB->z + pkMatA->e32 * pkVecB->w;
+    tmpVec.w = pkMatA->e03 * pkVecB->x + pkMatA->e13 * pkVecB->y + pkMatA->e23 * pkVecB->z + pkMatA->e33 * pkVecB->w;
 
     *pVecC = tmpVec;
+}
+
+void trans_divideVector4ByW(
+    INOUT VECTOR4_t* pVec)
+{
+    if (pVec->w != 0)
+    {
+        pVec->x /= pVec->w;
+        pVec->y /= pVec->w;
+        pVec->z /= pVec->w;
+    }
 }

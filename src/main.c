@@ -4,6 +4,7 @@
 #include "render.h"
 #include "draw.h"
 #include "thread.h"
+#include "camera.h"
 
 int main()
 {   
@@ -15,29 +16,42 @@ int main()
     nodelay(stdscr, TRUE);
 
     // Prepare test data
-    R4 size = 0.5f;
+    R4 size = 1.f;
     TRIANGLE_t trianglePre = {
         .ptA = {-size, size, 0, 1},
         .ptB = {size, size, 0, 1},
         .ptC = {0, -size, 0, 1}
     };
+
     TRIANGLE_t triangleAfter;
-    MATRIX44_t trans;
-    VECTOR3_t vecScale = {1, 1, 1};
-    VECTOR3_t vecRotate = {0, 1, 0};
+    VECTOR3_t vecTrans = {0.f, 0.f, -2.f};
+    VECTOR3_t vecScale = {1.f, 1.f, 1.f};
+    VECTOR3_t vecRotate = {0.f, 1.f, 0.f};
     R4 angleRotate = 0.0;
-    R4 angleRotateStep = 1.f * PI_R4 / 180.0f;
+    R4 angleRotateStep = DEG_TO_RAD(1);
+
+    // Prepare camera
+    CAMERA_t camera;
+    camera.fieldOfView= 1.6f;
+    camera.aspectRatio = (((R4) WINDOW_WIDTH) / 2) / WINDOW_HEIGHT;
+    camera.planeFar = 400.f;;
+    camera.planeNear = 0.2f;
+    camera_setView(&camera);
+    camera_setProjection(&camera);
+    camera_setViewProjected(&camera);
+
 
     // Prepare thread data
     FRAMEBUFFER_t pFramebuffer[2];
     RENDER_DATA_t dataRender = {
-        .pFramebuffer   = &pFramebuffer[0],
-        .pTrianglePre   = &trianglePre,
-        .pTriangleAfter = &triangleAfter,
-        .pMatTrans      = &trans,
-        .pVecScale      = &vecScale,
-        .pVecRotate     = &vecRotate,
-        .pAngleRotate   = &angleRotate
+        .pFramebuffer       = &pFramebuffer[0],
+        .pMatViewProjected  = &camera.matViewProjected,
+        .pTrianglePre       = &trianglePre,
+        .pTriangleAfter     = &triangleAfter,
+        .pVecTrans          = &vecTrans,
+        .pVecScale          = &vecScale,
+        .pVecRotate         = &vecRotate,
+        .pAngleRotate       = &angleRotate
     };
 
     DRAW_DATA_t dataDraw = {

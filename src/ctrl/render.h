@@ -9,9 +9,10 @@
 
 typedef struct RENDER_DATA_s {
     FRAMEBUFFER_t*  pFramebuffer;
+    MATRIX44_t*     pMatViewProjected;
     TRIANGLE_t*     pTrianglePre;
     TRIANGLE_t*     pTriangleAfter;
-    MATRIX44_t*     pMatTrans;
+    VECTOR3_t*      pVecTrans;
     VECTOR3_t*      pVecScale;
     VECTOR3_t*      pVecRotate;
     R4*             pAngleRotate;
