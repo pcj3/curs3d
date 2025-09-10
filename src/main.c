@@ -15,13 +15,12 @@ int main()
     noecho();
     curs_set(0);
     start_color(); 
-    init_pair(2, COLOR_GREEN, COLOR_WHITE);
+    init_pair(2, COLOR_BLACK, COLOR_GREEN);
     nodelay(stdscr, TRUE);
 
     // Prepare test data
     MODEL_t model;
-    const CH kModelObj[] = "res/cow.obj";
-    obj_read_model(kModelObj, &model);
+    obj_read_model("res/cow.obj", &model);
     VECTOR3_t vecTrans = {0.f, 0.f, -10.f};
     VECTOR3_t vecScale = {1.f, 1.f, 1.f};
     VECTOR3_t vecRotate = {0.0f, 1.f, 0.f};
