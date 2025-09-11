@@ -21,6 +21,6 @@ void draw_do(INOUT DRAW_DATA_t* pData)
             attroff(COLOR_PAIR(2));
         }
     }
-    mvaddch(0, 0, 'A');
+    mvprintw(0, 0, "hiho Peiczus");
     refresh();
 }

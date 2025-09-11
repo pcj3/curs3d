@@ -7,8 +7,8 @@ OBJS 		:= $(SRCS:%=$(BUILD_DIR)/%.o)
 INC_DIRS 	:= $(shell find $(SRC_DIR) -type d)
 INC_FLAGS 	:= $(addprefix -I,$(INC_DIRS))
 CPPFLAGS	:= $(INC_FLAGS)
-CFLAGS		:= -Wall -Wextra -Wconversion -Wsign-conversion -Wfloat-conversion -std=gnu11 -D_POSIX_C_SOURCE=200809L
-LDFLAGS		:= -lncurses -lm -lc
+CFLAGS		:= -Wall -Wextra
+LDFLAGS		:= -lncurses -lm
 
 
 $(TARGET_EXEC): $(OBJS)
