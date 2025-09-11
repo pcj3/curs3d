@@ -9,7 +9,7 @@
 
 int main()
 {   
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "en_US.UTF-8");
     // Init data
     initscr();
     raw();

@@ -66,59 +66,46 @@ void framebuffer_rasterizeTriangle(
     {
         for (U4 x = minX; x < maxX; x++)
         {   
-                        
-            triangle_getVecBarrycentric((R4)x, 
-                    (R4)y,
+            static const struct {
+            R4 dx, dy;
+            U1 bit;
+            } dots[8] = {
+                {-0.166f, -0.168f, 0},
+                {-0.166f, -0.002f, 1},
+                {-0.166f, +0.164f, 2},
+                {-0.166f, +0.330f, 6},
+                {+0.166f, -0.168f, 3},
+                {+0.166f, -0.002f, 4},
+                {+0.166f, +0.164f, 5},
+                {+0.166f, +0.330f, 7},
+            };
+
+            GLYPH_t glyph = 0;
+            R4 depth = 0;
+            U1 dotsCount = 0;
+            for (int i = 0; i < 8; i++) 
+            {   
+                triangle_getVecBarrycentric((R4)x+dots[i].dx, 
+                    (R4)y+dots[i].dy,
                     &dataBarrycentric,
                     &triangleXY.ptC,
                     &vecBarrycentric);
-
-            if (triangle_isPointIn(&vecBarrycentric))
-            {
-                framebuffer_setPixel(x, y, 0xFF, 0, pFramebuffer); 
-            }
-
-
-            // static const struct {
-            // R4 dx, dy;
-            // U1 bit;
-            // } dots[8] = {
-            //     {-0.166f, -0.168f, 0},
-            //     {-0.166f, -0.002f, 1},
-            //     {-0.166f, +0.164f, 2},
-            //     {-0.166f, +0.330f, 6},
-            //     {+0.166f, -0.168f, 3},
-            //     {+0.166f, -0.002f, 4},
-            //     {+0.166f, +0.164f, 5},
-            //     {+0.166f, +0.330f, 7},
-            // };
-
-            // GLYPH_t glyph = 0;
-            // R4 depth = 0;
-            // U1 dotsCount = 0;
-            // for (int i = 0; i < 8; i++) 
-            // {   
-            //     triangle_getVecBarrycentric((R4)x+dots[i].dx, 
-            //         (R4)y+dots[i].dy,
-            //         &dataBarrycentric,
-            //         &triangleXY.ptC,
-            //         &vecBarrycentric);
                 
-            //     if (triangle_isPointIn(&vecBarrycentric))
-            //     {
-            //         glyph |= (1u << dots[i].bit);
-            //         depth +=      (pTriangle->ptA.z / pTriangle->ptA.w) * vecBarrycentric.x \
-            //                     + (pTriangle->ptB.z / pTriangle->ptB.w) * vecBarrycentric.y \
-            //                     + (pTriangle->ptC.z / pTriangle->ptC.w) * vecBarrycentric.z;
-            //         dotsCount++;
-            //     }     
-            // }
-            // if (dotsCount)
-            // {
-            //     depth /= dotsCount;
-            //     depth *= FRAMEBUFFER_MAX_DEPTH;
-            //     framebuffer_setPixel(x, y, 0xFF, depth, pFramebuffer); 
-            // }
+                if (triangle_isPointIn(&vecBarrycentric))
+                {
+                    glyph |= (1u << dots[i].bit);
+                    depth +=      (pTriangle->ptA.z / pTriangle->ptA.w) * vecBarrycentric.x \
+                                + (pTriangle->ptB.z / pTriangle->ptB.w) * vecBarrycentric.y \
+                                + (pTriangle->ptC.z / pTriangle->ptC.w) * vecBarrycentric.z;
+                    dotsCount++;
+                }     
+            }
+            if (dotsCount)
+            {
+                depth /= dotsCount;
+                depth *= FRAMEBUFFER_MAX_DEPTH;
+                framebuffer_setPixel(x, y, glyph, depth, pFramebuffer); 
+            }
         }
     }
 }
