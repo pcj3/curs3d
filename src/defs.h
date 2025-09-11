@@ -1,12 +1,13 @@
 #ifndef AUX_H
 #define AUX_H
 
-#include "curses.h"
+#include <ncurses.h>
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <float.h>
+#include <locale.h>
 
 #define IN
 #define OUT
@@ -31,7 +32,7 @@ typedef double                R8;     // 8 byte floating point
 typedef char                  CH;     // ASCII character
 typedef bool                  BOOL;
 
-typedef U1  COLOR_t;
+typedef U1  GLYPH_t;
 typedef U2  DEPTH_t;
 
 //#define DEBUG

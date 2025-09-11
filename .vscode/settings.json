@@ -5,7 +5,7 @@
         "matrix44.h": "c",
         "model.h": "c",
         "triangle.h": "c",
-        "time.h": "c",
+        "fps": "c",
         "defs.h": "c",
         "unistd.h": "c",
         "complex": "c",

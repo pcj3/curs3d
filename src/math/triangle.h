@@ -11,8 +11,8 @@ typedef struct TRIANGLE_s {
 } TRIANGLE_t;
 
 BOOL triangle_isPointIn(
-    IN const U4 kX,
-    IN const U4 ky,
+    IN const R4 kX,
+    IN const R4 ky,
     IN const TRIANGLE_t* pkTriangle
 );
 

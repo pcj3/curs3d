@@ -2,7 +2,7 @@
 #define DRAW_FRAMEBUFFER_h
 
 #define FRAMEBUFFER_DEPTHS_SIZE_MAX 20000
-#define FRAMEBUFFER_COLORS_SIZE_MAX 20000
+#define FRAMEBUFFER_GLYPHS_SIZE_MAX 20000
 
 #include "defs.h"
 #include "triangle.h"
@@ -13,12 +13,12 @@
 typedef struct FRAMEBUFFER_s {
     U4 width;
     U4 height;
-    COLOR_t colors[FRAMEBUFFER_COLORS_SIZE_MAX];
+    GLYPH_t glyphs[FRAMEBUFFER_GLYPHS_SIZE_MAX];
     DEPTH_t depths[FRAMEBUFFER_DEPTHS_SIZE_MAX];
 } FRAMEBUFFER_t;
 
 void framebuffer_clear(
-    IN const COLOR_t k_color,
+    IN const GLYPH_t k_glyph,
     OUT FRAMEBUFFER_t* p_framebuffer);
 
 void framebuffer_setSize(
@@ -29,7 +29,7 @@ void framebuffer_setSize(
 void framebuffer_setPixel(
     IN const U4 k_x,
     IN const U4 k_y,
-    IN const COLOR_t k_color,
+    IN const GLYPH_t k_glyph,
     IN const DEPTH_t k_depth,
     INOUT FRAMEBUFFER_t* p_framebuffer);
 

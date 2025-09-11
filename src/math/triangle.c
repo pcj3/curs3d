@@ -6,8 +6,8 @@
 
 
 BOOL triangle_isPointIn(
-    IN const U4 kX,
-    IN const U4 kY,
+    IN const R4 kX,
+    IN const R4 kY,
     IN const TRIANGLE_t* pkTriangle)
 {
     VECTOR4_t ptA = pkTriangle->ptA;

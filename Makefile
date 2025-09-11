@@ -16,7 +16,7 @@ $(TARGET_EXEC): $(OBJS)
 
 $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) -D_XOPEN_SOURCE_EXTENDED -c $< -o $@
 
 debug: $(OBJS)
 	$(CC) $(OBJS) -g -o $@ $(LDFLAGS)

@@ -3,13 +3,13 @@
 #include <string.h>
 
 void framebuffer_clear(
-    IN const COLOR_t k_color,
+    IN const GLYPH_t k_glyph,
     OUT FRAMEBUFFER_t* p_framebuffer)
 {
     p_framebuffer->height = 0;
     p_framebuffer->width = 0;
     memset(p_framebuffer->depths, FRAMEBUFFER_MAX_DEPTH, sizeof(DEPTH_t) * FRAMEBUFFER_DEPTHS_SIZE_MAX);
-    memset(p_framebuffer->colors, k_color, sizeof(COLOR_t) * FRAMEBUFFER_DEPTHS_SIZE_MAX);
+    memset(p_framebuffer->glyphs, k_glyph, sizeof(GLYPH_t) * FRAMEBUFFER_DEPTHS_SIZE_MAX);
 }
 
 void framebuffer_setSize(
@@ -24,7 +24,7 @@ void framebuffer_setSize(
 void framebuffer_setPixel(
     IN const U4 k_x,
     IN const U4 k_y,
-    IN const COLOR_t k_color,
+    IN const GLYPH_t k_glyph,
     IN const DEPTH_t k_depth,
     INOUT FRAMEBUFFER_t* p_framebuffer)
 {
@@ -34,7 +34,7 @@ void framebuffer_setPixel(
     {
         return;
     }
-    p_framebuffer->colors[idx] = k_color;
+    p_framebuffer->glyphs[idx] = k_glyph;
     p_framebuffer->depths[idx] = k_depth;
 }
 
@@ -58,8 +58,18 @@ void framebuffer_rasterizeTriangle(
         for (U4 x = minX; x < maxX; x++)
         {
             if (triangle_isPointIn(x, y, &triangleXY))
-            {
-                framebuffer_setPixel(x, y, ' ', 0, pFramebuffer);
+            {   
+                U1 mask = 0x00;
+                mask |= triangle_isPointIn((R4) x-.166f, (R4) y-.168f, &triangleXY) << 0;
+                mask |= triangle_isPointIn((R4) x-.166f, (R4) y-.002f, &triangleXY) << 1;
+                mask |= triangle_isPointIn((R4) x-.166f, (R4) y+.164f, &triangleXY) << 2;
+                mask |= triangle_isPointIn((R4) x-.166f, (R4) y+.330f, &triangleXY) << 6;
+                
+                mask |= triangle_isPointIn((R4) x+.166f, (R4) y-.168f, &triangleXY) << 3;
+                mask |= triangle_isPointIn((R4) x+.166f, (R4) y-.002f, &triangleXY) << 4;
+                mask |= triangle_isPointIn((R4) x+.166f, (R4) y+.164f, &triangleXY) << 5;
+                mask |= triangle_isPointIn((R4) x+.166f, (R4) y+.330f, &triangleXY) << 7;
+                framebuffer_setPixel(x, y, mask, 0, pFramebuffer);
             }
         }
     }

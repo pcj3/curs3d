@@ -11,14 +11,15 @@ void draw_do(INOUT DRAW_DATA_t* pData)
         for (U4 x = 0; x < pData->pFramebuffer->width; x++)
         {
             idx = XY_TO_FRAMEBUFFER_IDX(x, y, pData->pFramebuffer->width);
-            COLOR_t color = pData->pFramebuffer->colors[idx];
-            if (!color)
+            GLYPH_t glyph = pData->pFramebuffer->glyphs[idx];
+            if (!glyph)
             {
                 continue;
             }
-            attron(COLOR_PAIR(2));
-            mvaddch((I) y, (I) x, color);
-            attroff(COLOR_PAIR(2));
+
+            wchar_t braille[] = {(wchar_t)(glyph + 0x2800), L'\0'};
+            mvaddwstr((I)y, (I)x, braille);
+
         }
     }
     mvprintw(0, 0, "hiho Peiczus");

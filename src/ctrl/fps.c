@@ -3,7 +3,7 @@
 #include <time.h>
 
 #include "defs.h"
-#include "time.h"
+#include "fps.h"
 
 
 R8 time_getTimeInSec()
