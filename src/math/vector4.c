@@ -36,13 +36,12 @@ void vector4_addElementWiseVector4(
     *pVecC = tmpVec;
 }
 
-void vector4_divideByW(
+void vector4_divideXYByZ(
     INOUT VECTOR4_t* pVec)
 {
-    if (pVec->w != 0)
+    if (pVec->z != 0)
     {
-        pVec->x /= pVec->w;
-        pVec->y /= pVec->w;
-        pVec->z /= pVec->w;
+        pVec->x /= pVec->z;
+        pVec->y /= pVec->z;
     }
 }

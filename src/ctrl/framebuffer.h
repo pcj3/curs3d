@@ -1,13 +1,14 @@
 #ifndef DRAW_FRAMEBUFFER_h
 #define DRAW_FRAMEBUFFER_h
 
-#define FRAMEBUFFER_DEPTHS_SIZE_MAX 20000
-#define FRAMEBUFFER_GLYPHS_SIZE_MAX 20000
+#define FRAMEBUFFER_DEPTHS_SIZE_MAX 200000
+#define FRAMEBUFFER_GLYPHS_SIZE_MAX 200000
 
 #include "defs.h"
 #include "triangle.h"
 
-#define FRAMEBUFFER_MAX_DEPTH 0xFF
+#define FRAMEBUFFER_MAX_DEPTH 0xFFFF
+
 #define XY_TO_FRAMEBUFFER_IDX(x, y, width) ((y) * (width) + (x))
 
 typedef struct FRAMEBUFFER_s {
@@ -18,7 +19,6 @@ typedef struct FRAMEBUFFER_s {
 } FRAMEBUFFER_t;
 
 void framebuffer_clear(
-    IN const GLYPH_t k_glyph,
     OUT FRAMEBUFFER_t* p_framebuffer);
 
 void framebuffer_setSize(
@@ -36,6 +36,7 @@ void framebuffer_setPixel(
 void framebuffer_rasterizeTriangle(
     IN TRIANGLE_t* pTriangle,
     OUT FRAMEBUFFER_t* pFramebuffer);
-
+    
+unsigned int popcount8(uint8_t x);
 
 #endif // DRAW_FRAMEBUFFER_h

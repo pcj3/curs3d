@@ -19,9 +19,8 @@ void draw_do(INOUT DRAW_DATA_t* pData)
 
             wchar_t braille[] = {(wchar_t)(glyph + 0x2800), L'\0'};
             mvaddwstr((I)y, (I)x, braille);
-
         }
     }
-    mvprintw(0, 0, "hiho Peiczus");
+    mvprintw(0, 0, "W: %d H: %d", pData->pFramebuffer->width, pData->pFramebuffer->height);
     refresh();
 }

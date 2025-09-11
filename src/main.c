@@ -19,12 +19,12 @@ int main()
 
     // Prepare test data
     MODEL_t model;
-    obj_read_model("res/cube.obj", &model);
-    VECTOR3_t vecTrans = {0.f, 0.f, -5.f};
+    obj_read_model("res/cow.obj", &model);
+    VECTOR3_t vecTrans = {0.f, 0.f, -10.f};
     VECTOR3_t vecScale = {1.f, 1.f, 1.f};
     VECTOR3_t vecRotate = {0.0f, 1.f, 0.f};
     R4 angleRotate = 0.0;
-    R4 angleRotateStep = DEG_TO_RAD(0);
+    R4 angleRotateStep = DEG_TO_RAD(10);
 
     // Prepare camera
     CAMERA_t camera;

@@ -4,30 +4,6 @@
 
 #define POINT_IN_TRIANGLE_TOLERANCE (-1e-3)
 
-
-BOOL triangle_isPointIn(
-    IN const R4 kX,
-    IN const R4 kY,
-    IN const TRIANGLE_t* pkTriangle)
-{
-    VECTOR4_t ptA = pkTriangle->ptA;
-    VECTOR4_t ptB = pkTriangle->ptB;
-    VECTOR4_t ptC = pkTriangle->ptC;
-
-
-    R8 denom = (ptB.y - ptC.y) * (ptA.x - ptC.x) + (ptC.x - ptB.x) * (ptA.y - ptC.y);
-    R8 weightPtA = ((ptB.y - ptC.y) * ((R8) kX - ptC.x) + (ptC.x - ptB.x) * ((R8) kY - ptC.y)) / denom;
-    R8 weightPtB = ((ptC.y - ptA.y) * ((R8) kX - ptC.x) + (ptA.x - ptC.x) * ((R8) kY - ptC.y)) / denom;
-
-    R8 weightPtC = 1. - weightPtA - weightPtB;
-
-    BOOL resPtA = weightPtA >= POINT_IN_TRIANGLE_TOLERANCE;
-    BOOL resPtB = weightPtB >= POINT_IN_TRIANGLE_TOLERANCE;
-    BOOL resPtC = weightPtC >= POINT_IN_TRIANGLE_TOLERANCE;
-    return resPtA && resPtB && resPtC;
-
-}
-
 void triangle_transformToPixelXY(
     IN const TRIANGLE_t* pkTriangleIn,
     IN const U4 kWidth,
@@ -60,4 +36,40 @@ void triangle_transformToPixelXY(
     vector4_addElementWiseVector4(&pTriangleOut->ptC,
         &vecToAdd,
         &pTriangleOut->ptC);
+}
+
+BOOL triangle_isPointIn(
+    IN const VECTOR3_t* pkVecBarrycentric)
+{
+    BOOL resPtA = pkVecBarrycentric->x < POINT_IN_TRIANGLE_TOLERANCE;
+    BOOL resPtB = pkVecBarrycentric->y < POINT_IN_TRIANGLE_TOLERANCE;
+    BOOL resPtC = pkVecBarrycentric->z < POINT_IN_TRIANGLE_TOLERANCE;
+    return (resPtA == resPtB) && (resPtB == resPtC);
+}
+
+void triangle_getDataBarrycentric(
+    IN const TRIANGLE_t* pkTriangle,
+    OUT BARRYCENTRIC_DATA_t* pData)
+{
+    VECTOR4_t ptA = pkTriangle->ptA;
+    VECTOR4_t ptB = pkTriangle->ptB;
+    VECTOR4_t ptC = pkTriangle->ptC;
+    pData->bcy = ptB.y - ptC.y;
+    pData->cbx = ptC.x - ptB.x;
+    pData->acy = ptA.y - ptC.y;
+    pData->acx = ptA.x - ptC.x;
+    pData->cay = ptC.y - ptA.y;
+    pData->denom = pData->bcy * pData->acx + pData->cbx *  pData->acy;
+}
+
+void triangle_getVecBarrycentric(
+    IN const R4 kX,
+    IN const R4 kY,
+    IN const BARRYCENTRIC_DATA_t* pkData,
+    IN const VECTOR4_t* pkVertexC,
+    OUT VECTOR3_t* pVecBarrycentric)
+{
+    pVecBarrycentric->x = (pkData->bcy * (kX - pkVertexC->x) + pkData->cbx * (kY - pkVertexC->y)) / pkData->denom;
+    pVecBarrycentric->y = (pkData->cay * (kX - pkVertexC->x) + pkData->acx * (kY - pkVertexC->y)) / pkData->denom;
+    pVecBarrycentric->z = 1.f - pVecBarrycentric->x - pVecBarrycentric->y;
 }

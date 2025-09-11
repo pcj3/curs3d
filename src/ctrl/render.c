@@ -33,7 +33,7 @@ void render_do(INOUT RENDER_DATA_t* pData)
         &matTrans);
     
     // Clear buffer
-    framebuffer_clear(0, pData->pFramebuffer);
+    framebuffer_clear(pData->pFramebuffer);
     framebuffer_setSize(WINDOW_WIDTH,
         WINDOW_HEIGHT,
         pData->pFramebuffer);
@@ -59,9 +59,9 @@ void render_do(INOUT RENDER_DATA_t* pData)
             &triangle.ptC);
 
         // Distance scaling
-        vector4_divideByW(&triangle.ptA);
-        vector4_divideByW(&triangle.ptB);
-        vector4_divideByW(&triangle.ptC);
+        vector4_divideXYByZ(&triangle.ptA);
+        vector4_divideXYByZ(&triangle.ptB);
+        vector4_divideXYByZ(&triangle.ptC);
 
         // Rasterize
         framebuffer_rasterizeTriangle(&triangle,

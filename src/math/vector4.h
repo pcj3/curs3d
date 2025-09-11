@@ -20,7 +20,7 @@ void vector4_addElementWiseVector4(
     IN const VECTOR4_t* pkVecB,
     OUT VECTOR4_t* pVecC);
 
-void vector4_divideByW(
+void vector4_divideXYByZ(
     INOUT VECTOR4_t* pVec);
 
 #endif // MATH_VECTOR4_H
