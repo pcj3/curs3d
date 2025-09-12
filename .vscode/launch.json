@@ -2,10 +2,10 @@
     "version": "0.0.1",
     "configurations": [
         {
-            "name": "DEBUG",
-            "type": "cppdbg", "request": "launch", "MIMode": "gdb", "miDebuggerPath" : "gdb",
+           "name": "DEBUG",
+            "type": "cppdbg", "request": "launch", "MIMode": "lldb",
             "stopAtEntry": false,
-            "miDebuggerPath": "/usr/bin/gdb",
+            "miDebuggerPath": "/usr/bin/lldb",
             "preLaunchTask" : "make debug",
             "program": "${workspaceFolder}/test",
             "cwd": "${workspaceFolder}"

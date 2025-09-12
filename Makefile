@@ -21,18 +21,22 @@ endif
 
 ifeq ($(UNAME_S),Darwin)
 	LFLAGS += -lncurses 
-	DFLAGS := -DMAC -D_XOPEN_SOURCE_EXTENDED
+	DFLAGS := -DMAC -D_XOPEN_SOURCE_EXTENDED 
 endif
 
 $(TARGET_EXEC): $(OBJS)
-	$(CC) $(OBJS) -o $@ $(DFLAGS) $(LFLAGS)
+	$(CC) $(OBJS) -o $@ $(DFLAGS) $(CFLAGS) $(LFLAGS)
 
 $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(DFLAGS) -c $< -o $@
 
 debug: CFLAGS += -g
+ifeq ($(UNAME_S),Darwin)
+	CFLAGS += -gdwarf-4 -O0
+endif
 debug: $(TARGET_EXEC)
+
 
 .PHONY: clean
 clean:

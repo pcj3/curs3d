@@ -19,7 +19,9 @@ int main()
     raw();
     noecho();
     curs_set(0);
+#ifndef DEBUG
     nodelay(stdscr, TRUE);
+#endif // DEBUG
 
     // Prepare test data
     MODEL_t model;
@@ -28,7 +30,11 @@ int main()
     VECTOR3_t vecScale = {1.f, 1.f, 1.f};
     VECTOR3_t vecRotate = {0.0f, 1.f, 0.f};
     R4 angleRotate = 0.0;
+#ifdef DEBUG
+    R4 angleRotateStep = DEG_TO_RAD(0);
+#else //DEBUG
     R4 angleRotateStep = DEG_TO_RAD(1);
+#endif // DEBUG
 
     // Prepare camera
     CAMERA_t camera;
