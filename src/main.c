@@ -9,8 +9,11 @@
 
 int main()
 {
-    // setlocale(LC_ALL, "en_US.UTF-8");
+#ifdef MAC
+    setlocale(LC_ALL, "en_US.UTF-8");
+#else // MAC
     setlocale(LC_ALL, "");
+#endif //MAC
     // Init data
     initscr();
     raw();
