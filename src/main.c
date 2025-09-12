@@ -19,12 +19,12 @@ int main()
     raw();
     noecho();
     curs_set(0);
-    //nodelay(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
 
     // Prepare test data
     MODEL_t model;
-    obj_read_model("res/cube.obj", &model);
-    VECTOR3_t vecTrans = {0.f, 0.f, -5.f};
+    obj_read_model("res/cow.obj", &model);
+    VECTOR3_t vecTrans = {0.f, 0.f, -10.f};
     VECTOR3_t vecScale = {1.f, 1.f, 1.f};
     VECTOR3_t vecRotate = {0.0f, 1.f, 0.f};
     R4 angleRotate = 0.0;
@@ -34,7 +34,7 @@ int main()
     CAMERA_t camera;
     camera.fieldOfView= 1.2f;
     camera.aspectRatio = ((R4) WINDOW_WIDTH / 2.f) / (R4) (WINDOW_HEIGHT);
-    camera.planeFar = 400.f;;
+    camera.planeFar = 400.f;
     camera.planeNear = .2f;
     camera_setView(&camera);
     camera_setProjection(&camera);

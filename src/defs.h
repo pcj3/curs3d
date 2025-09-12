@@ -39,7 +39,6 @@ typedef bool                  BOOL;
 
 typedef U1  GLYPH_t;
 typedef U1  DEPTH_t;
-#define FRAMEBUFFER_MAX_DEPTH 0xFF
 
 //#define DEBUG
 

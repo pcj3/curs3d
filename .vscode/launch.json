@@ -5,8 +5,9 @@
             "name": "DEBUG",
             "type": "cppdbg", "request": "launch", "MIMode": "gdb", "miDebuggerPath" : "gdb",
             "stopAtEntry": false,
+            "miDebuggerPath": "/usr/bin/gdb",
             "preLaunchTask" : "make debug",
-            "program": "${workspaceFolder}/test_debug",
+            "program": "${workspaceFolder}/test",
             "cwd": "${workspaceFolder}"
         }
     ]

@@ -29,8 +29,8 @@ $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -c $< -o $@
 
-debug: $(OBJS)
-	$(CC) $(OBJS) -g -o $@ $(LDFLAGS)
+debug: CFLAGS += -g
+debug: $(TARGET_EXEC)
 
 .PHONY: clean
 clean:

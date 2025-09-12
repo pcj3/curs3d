@@ -10,7 +10,7 @@
         {
             "label": "make debug",
             "group": "build",
-            "command": "make test_debug",
+            "command": "make debug",
         },
     ]
 }

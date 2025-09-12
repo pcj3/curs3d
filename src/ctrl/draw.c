@@ -21,6 +21,10 @@ void draw_do(INOUT DRAW_DATA_t* pData)
             set++;
             wchar_t braille[] = {(wchar_t)(brailleDotMask + BRAILLE_UNICODE_OFFSET), L'\0'};
             mvaddwstr((I)y, (I)x, braille);
+            mvprintw(1, 0, "W: %lu H: %lu SET: %lu", pData->pFramebuffer->width, pData->pFramebuffer->height, set);
+            refresh();
+            mvprintw(2, 0, "");
+
         }
     }
     mvprintw(0, 0, "W: %lu H: %lu SET: %lu", pData->pFramebuffer->width, pData->pFramebuffer->height, set);

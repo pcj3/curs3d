@@ -26,27 +26,15 @@ void framebuffer_setPixel(
 {
     U4 idxPixel = XY_TO_FRAMEBUFFER_IDX(kX, kY, pFramebuffer->width);
     U4 idxDepth = idxPixel * BRAILLE_DOTS_COUNT;
-    R4 depth = 0;
-
     for (U1 idxDot = 0; idxDot < BRAILLE_DOTS_COUNT; idxDot++)
     {
-        if (braille_getDotState(idxDot, idxDot))
+        if (    (braille_getDotState(kBraille.dotMask, idxDot))
+                && (kBraille.depths[idxDot] < pFramebuffer->depths[idxDepth+idxDot])
+        )
         {
-            depth += kBraille.depths[idxDot];
+            braille_setDot(&pFramebuffer->glyphs[idxPixel], idxDot);
+            pFramebuffer->depths[idxDepth+idxDot] = kBraille.depths[idxDot];
         }
-
-        // if (kBraille.depths[idxDot] < pFramebuffer->depths[idxDepth+idxDot])
-        // {
-        //     braille_setDot(&pFramebuffer->glyphs[idxPixel], idxDot);
-        //     pFramebuffer->depths[idxDepth+idxDot] = kBraille.depths[idxDot];
-        // }
-    }
-    depth = depth / braille_countDots(kBraille.dotMask);
-
-    if ((DEPTH_t) depth < pFramebuffer->depths[idxPixel])
-    {
-        pFramebuffer->glyphs[idxPixel] = kBraille.dotMask;
-        pFramebuffer->depths[idxPixel] = depth;
     }
 }
 
@@ -72,7 +60,9 @@ void framebuffer_rasterizeTriangle(
         for (U4 x = minX; x < maxX; x++)
         {
             BRAILLE_t braille = {0};
-            U1 dots = 0x00;
+            U1 dots = 0;
+            R4 depth = 0;
+            U1 c = 0;
             for (int idxDot = 0; idxDot < BRAILLE_DOTS_COUNT; idxDot++)
             {
                 VECTOR3_t vecBarrycentric = {0};
@@ -85,18 +75,15 @@ void framebuffer_rasterizeTriangle(
 
                 if (triangle_isPointIn(&vecBarrycentric))
                 {
-                    //braille_setDot(&braille.dotMask, BRAILLE_LUT[idxDot].pos);
-                    dots |= 1u << BRAILLE_LUT[idxDot].pos;
-                    braille.depths[idxDot] =
-                        ( (pTriangle->ptA.z / pTriangle->ptA.w) * vecBarrycentric.x
-                        + (pTriangle->ptB.z / pTriangle->ptB.w) * vecBarrycentric.y
-                        + (pTriangle->ptC.z / pTriangle->ptC.w) * vecBarrycentric.z)
+                    braille_setDot(&braille.dotMask, idxDot);
+                    braille.depths[idxDot] = ( \
+                        (pTriangle->ptA.z / pTriangle->ptA.w) * vecBarrycentric.x \
+                        + (pTriangle->ptB.z / pTriangle->ptB.w) * vecBarrycentric.y \
+                        + (pTriangle->ptC.z / pTriangle->ptC.w) * vecBarrycentric.z) \
                         * FRAMEBUFFER_MAX_DEPTH;
                 }
             }
-            braille.dotMask = dots;
             framebuffer_setPixel(x, y, braille, pFramebuffer);
         }
     }
 }
-
