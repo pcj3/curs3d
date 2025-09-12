@@ -33,7 +33,7 @@ void triangle_getDataBarrycentric(
     IN const TRIANGLE_t* pTriangle,
     OUT BARRYCENTRIC_DATA_t* pData);
 
-void triangle_getVecBarrycentric(
+void triangle_setVecBarrycentric(
     IN const R4 kX,
     IN const R4 kY,
     IN const BARRYCENTRIC_DATA_t* pkData,

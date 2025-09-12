@@ -1,7 +1,12 @@
 #ifndef AUX_H
 #define AUX_H
 
-#include <ncurses.h>
+#ifdef LINUX
+#   include <ncursesw/ncurses.h>
+#else // LINUX
+#   include <ncurses.h>
+#endif //LINUX
+
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -33,7 +38,8 @@ typedef char                  CH;     // ASCII character
 typedef bool                  BOOL;
 
 typedef U1  GLYPH_t;
-typedef U2  DEPTH_t;
+typedef U1  DEPTH_t;
+#define FRAMEBUFFER_MAX_DEPTH 0xFF
 
 //#define DEBUG
 

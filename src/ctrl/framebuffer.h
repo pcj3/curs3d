@@ -1,14 +1,13 @@
 #ifndef DRAW_FRAMEBUFFER_h
 #define DRAW_FRAMEBUFFER_h
 
-#define FRAMEBUFFER_DEPTHS_SIZE_MAX 200000
-#define FRAMEBUFFER_GLYPHS_SIZE_MAX 200000
-
-#include "defs.h"
 #include "triangle.h"
+#include "defs.h"
+#include "braille.h"
 
-#define FRAMEBUFFER_MAX_DEPTH 0xFFFF
-
+#define FRAMEBUFFER_SIZE_MAX (30000)
+#define FRAMEBUFFER_DEPTHS_SIZE_MAX (FRAMEBUFFER_SIZE_MAX * BRAILLE_DOTS_COUNT)
+#define FRAMEBUFFER_GLYPHS_SIZE_MAX (FRAMEBUFFER_SIZE_MAX)
 #define XY_TO_FRAMEBUFFER_IDX(x, y, width) ((y) * (width) + (x))
 
 typedef struct FRAMEBUFFER_s {
@@ -27,16 +26,13 @@ void framebuffer_setSize(
     OUT FRAMEBUFFER_t* p_framebuffer);
 
 void framebuffer_setPixel(
-    IN const U4 k_x,
-    IN const U4 k_y,
-    IN const GLYPH_t k_glyph,
-    IN const DEPTH_t k_depth,
-    INOUT FRAMEBUFFER_t* p_framebuffer);
+    IN const U4 kX,
+    IN const U4 kY,
+    IN const BRAILLE_t kBraille,
+    INOUT FRAMEBUFFER_t* pFamebuffer);
 
 void framebuffer_rasterizeTriangle(
     IN TRIANGLE_t* pTriangle,
     OUT FRAMEBUFFER_t* pFramebuffer);
-    
-unsigned int popcount8(uint8_t x);
 
 #endif // DRAW_FRAMEBUFFER_h

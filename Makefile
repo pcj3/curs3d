@@ -1,3 +1,15 @@
+# Detect OS
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Linux)
+    PLATFORM := linux
+endif
+ifeq ($(UNAME_S),Darwin)
+    PLATFORM := mac
+endif
+
+
+
 CC 			:= gcc
 TARGET_EXEC := test
 BUILD_DIR 	:= build
@@ -8,15 +20,23 @@ INC_DIRS 	:= $(shell find $(SRC_DIR) -type d)
 INC_FLAGS 	:= $(addprefix -I,$(INC_DIRS))
 CPPFLAGS	:= $(INC_FLAGS)
 CFLAGS		:= -Wall -Wextra
-LDFLAGS		:= -lncurses -lm
+LDFLAGS		:=  -lm
 
+ifeq ($(OS),Linux)
+	LDFLAGS += -lncursesw -DLINUX
+
+endif
+
+ifeq ($(OS),Darwin)
+	LDFLAGS += -lncurses -DMAC -D_XOPEN_SOURCE_EXTENDED
+endif
 
 $(TARGET_EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
 $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -D_XOPEN_SOURCE_EXTENDED -c $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -c $< -o $@
 
 debug: $(OBJS)
 	$(CC) $(OBJS) -g -o $@ $(LDFLAGS)

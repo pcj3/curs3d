@@ -62,7 +62,7 @@ void triangle_getDataBarrycentric(
     pData->denom = pData->bcy * pData->acx + pData->cbx *  pData->acy;
 }
 
-void triangle_getVecBarrycentric(
+void triangle_setVecBarrycentric(
     IN const R4 kX,
     IN const R4 kY,
     IN const BARRYCENTRIC_DATA_t* pkData,
