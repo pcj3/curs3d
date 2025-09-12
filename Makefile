@@ -11,23 +11,25 @@ INC_DIRS 	:= $(shell find $(SRC_DIR) -type d)
 INC_FLAGS 	:= $(addprefix -I,$(INC_DIRS))
 CPPFLAGS	:= $(INC_FLAGS)
 CFLAGS		:= -Wall -Wextra
-LDFLAGS		:=  -lm
+LFLAGS		:=  -lm
 
 ifeq ($(UNAME_S),Linux)
-	LDFLAGS += -lncursesw -DLINUX
+	DFLAGS := -DLINUX
+	LFLAGS += -lncursesw 
 
 endif
 
 ifeq ($(UNAME_S),Darwin)
-	LDFLAGS += -lncurses -DMAC -D_XOPEN_SOURCE_EXTENDED
+	LFLAGS += -lncurses 
+	DFLAGS := -DMAC -D_XOPEN_SOURCE_EXTENDED
 endif
 
 $(TARGET_EXEC): $(OBJS)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+	$(CC) $(OBJS) -o $@ $(DFLAGS) $(LFLAGS)
 
 $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
-	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -c $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(DFLAGS) -c $< -o $@
 
 debug: CFLAGS += -g
 debug: $(TARGET_EXEC)

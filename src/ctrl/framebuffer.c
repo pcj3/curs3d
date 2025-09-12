@@ -60,9 +60,6 @@ void framebuffer_rasterizeTriangle(
         for (U4 x = minX; x < maxX; x++)
         {
             BRAILLE_t braille = {0};
-            U1 dots = 0;
-            R4 depth = 0;
-            U1 c = 0;
             for (int idxDot = 0; idxDot < BRAILLE_DOTS_COUNT; idxDot++)
             {
                 VECTOR3_t vecBarrycentric = {0};
