@@ -63,14 +63,6 @@ void framebuffer_rasterizeTriangle(
             for (int idxDot = 0; idxDot < BRAILLE_DOTS_COUNT; idxDot++)
             {
                 VECTOR3_t vecBarrycentric = {0};
-
-                R4 cornerTopLeftX = (R4)x + BRAILLE_LUT[idxDot].dx;
-                R4 cornerTopLeftY = (R4)y + BRAILLE_LUT[idxDot].dy;
-                if (   (cornerTopLeftX < 0.f) || (cornerTopLeftX >= (R4)pFramebuffer->width)
-                    || (cornerTopLeftY < 0.f) || (cornerTopLeftY >= (R4)pFramebuffer->height))
-                {
-                    continue;
-                }       
                 triangle_setVecBarrycentric(
                     (R4)x + BRAILLE_LUT[idxDot].dx,
                     (R4)y + BRAILLE_LUT[idxDot].dy,

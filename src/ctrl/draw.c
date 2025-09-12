@@ -21,7 +21,8 @@ void draw_do(INOUT DRAW_DATA_t* pData)
             mvaddwstr((I)y, (I)x, braille);
 #ifdef DEBUG
             refresh();
-            getch();
+            mvprintw(1, 0, "W: %lu H: %lu",  pData->pFramebuffer->width, pData->pFramebuffer->height);
+            //getch();
 #endif //DEBUG
         }
     }

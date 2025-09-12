@@ -1,14 +1,18 @@
 {
-    "version": "0.0.1",
-    "configurations": [
-        {
-           "name": "DEBUG",
-            "type": "cppdbg", "request": "launch", "MIMode": "lldb",
-            "stopAtEntry": false,
-            "miDebuggerPath": "/usr/bin/lldb",
-            "preLaunchTask" : "make debug",
-            "program": "${workspaceFolder}/test",
-            "cwd": "${workspaceFolder}"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/test",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "terminal": "integrated",
+      "preLaunchTask": "make debug",
+      "env": {
+        "TERM": "xterm-256color"
+      }
+    }
+  ]
 }
