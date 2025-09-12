@@ -1,15 +1,6 @@
 # Detect OS
 UNAME_S := $(shell uname -s)
 
-ifeq ($(UNAME_S),Linux)
-    PLATFORM := linux
-endif
-ifeq ($(UNAME_S),Darwin)
-    PLATFORM := mac
-endif
-
-
-
 CC 			:= gcc
 TARGET_EXEC := test
 BUILD_DIR 	:= build
@@ -22,12 +13,12 @@ CPPFLAGS	:= $(INC_FLAGS)
 CFLAGS		:= -Wall -Wextra
 LDFLAGS		:=  -lm
 
-ifeq ($(OS),Linux)
+ifeq ($(UNAME_S),Linux)
 	LDFLAGS += -lncursesw -DLINUX
 
 endif
 
-ifeq ($(OS),Darwin)
+ifeq ($(UNAME_S),Darwin)
 	LDFLAGS += -lncurses -DMAC -D_XOPEN_SOURCE_EXTENDED
 endif
 

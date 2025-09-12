@@ -2,9 +2,9 @@
 #define AUX_H
 
 #ifdef LINUX
-#   include <ncursesw/ncurses.h>
+#include <ncursesw/ncurses.h>
 #else // LINUX
-#   include <ncurses.h>
+#include <ncurses.h>
 #endif //LINUX
 
 #include <math.h>
