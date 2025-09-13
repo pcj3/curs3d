@@ -8,8 +8,6 @@ void render_do(INOUT RENDER_DATA_t* pData)
     // Set transformation matrix to identity
     matrix44_setToIdentity(&matTrans);
 
-
-
     // Translate
     matrix44_translateByVector3(&matTrans,
         pData->pVecTrans,

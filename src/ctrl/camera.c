@@ -17,7 +17,11 @@ void camera_setView(
     VECTOR3_t axisZ = {0, 0, 1};
 
     matrix44_setToIdentity(&pCamera->matView);
-
+    
+    matrix44_translateByVector3(&pCamera->matView,
+        &pCamera->vecPosition,
+        &pCamera->matView);
+        
     matrix44_rotateByVector3(&pCamera->matView,
         &axisX,
         pCamera->vecRotation.x,
@@ -31,9 +35,7 @@ void camera_setView(
         pCamera->vecRotation.z,
         &pCamera->matView);
 
-    matrix44_translateByVector3(&pCamera->matView,
-        &pCamera->vecPosition,
-        &pCamera->matView);
+
 }
 
 void camera_setProjection(

@@ -41,10 +41,12 @@ int main()
 
     // Prepare camera
     CAMERA_t camera;
-    camera.fieldOfView= 1.2f;
-    camera.aspectRatio = ((R4) WINDOW_WIDTH / 2.f) / (R4) (WINDOW_HEIGHT);
-    camera.planeFar = 400.f;
-    camera.planeNear = .2f;
+    camera.vecPosition  = (VECTOR3_t){0, 0, 0};
+    camera.vecRotation  = (VECTOR3_t){0, 0, 0};
+    camera.fieldOfView  = 1.2f;
+    camera.aspectRatio  = ((R4) WINDOW_WIDTH / 2.f) / (R4) (WINDOW_HEIGHT);
+    camera.planeFar     = 400.f;
+    camera.planeNear    = .2f;
     camera_setView(&camera);
     camera_setProjection(&camera);
     camera_setViewProjected(&camera);
