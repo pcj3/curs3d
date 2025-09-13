@@ -24,6 +24,7 @@ extern const BRAILLE_LUT_t BRAILLE_LUT[];
 typedef struct BRAILLE_S {
     U1 dotMask;
     DEPTH_t depths[BRAILLE_DOTS_COUNT];
+    COLOR_t colors[BRAILLE_DOTS_COUNT];
 } BRAILLE_t;
 
 U1 braille_countDots(

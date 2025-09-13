@@ -21,7 +21,7 @@ void vector4_multiplyElementWiseByVector4(
     *pVecC = tmpVec;
 }
 
-void vector4_addElementWiseVector4(
+void vector4_add(
     IN const VECTOR4_t* pkVecA,
     IN const VECTOR4_t* pkVecB,
     OUT VECTOR4_t* pVecC)
@@ -32,6 +32,21 @@ void vector4_addElementWiseVector4(
     tmpVec.y = pkVecA->y + pkVecB->y;
     tmpVec.z = pkVecA->z + pkVecB->z;
     tmpVec.w = pkVecA->w + pkVecB->w;
+
+    *pVecC = tmpVec;
+}
+
+void vector4_subtract(
+    IN const VECTOR4_t* pkVecA,
+    IN const VECTOR4_t* pkVecB,
+    OUT VECTOR4_t* pVecC)
+{
+    VECTOR4_t tmpVec;
+
+    tmpVec.x = pkVecA->x - pkVecB->x;
+    tmpVec.y = pkVecA->y - pkVecB->y;
+    tmpVec.z = pkVecA->z - pkVecB->z;
+    tmpVec.w = pkVecA->w - pkVecB->w;
 
     *pVecC = tmpVec;
 }

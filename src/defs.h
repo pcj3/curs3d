@@ -42,7 +42,7 @@ typedef char                CH;         // ASCII character
 typedef bool                BOOL;       // bool
 typedef U1                  GLYPH_t;    // 
 typedef U1                  DEPTH_t;    //
-
+typedef U1                  COLOR_t;
 
 
 
@@ -57,7 +57,7 @@ typedef U1                  DEPTH_t;    //
 #define WINDOW_WIDTH    ((U4) (COLS))
 #define WINDOW_HEIGHT   ((U4) (LINES))
 #endif
-
+#define SHADE_COUNT 10
 #define FPS_TARGET (60)
 
 

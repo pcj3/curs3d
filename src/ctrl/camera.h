@@ -10,6 +10,7 @@ typedef struct CAMERA_s
 {
     VECTOR3_t   vecPosition;
     VECTOR3_t   vecRotation;
+    VECTOR3_t   vecLight;
     MATRIX44_t  matView;
     MATRIX44_t  matProjection;
     MATRIX44_t  matViewProjected;

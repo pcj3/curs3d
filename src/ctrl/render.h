@@ -7,10 +7,10 @@
 #include "matrix44.h"
 #include "vector3.h"
 #include "model.h"
-
+#include "camera.h"
 typedef struct RENDER_DATA_s {
     FRAMEBUFFER_t*  pFramebuffer;
-    MATRIX44_t*     pMatViewProjected;
+    CAMERA_t*       pCamera;
     MODEL_t*        pModel;
     VECTOR3_t*      pVecTrans;
     VECTOR3_t*      pVecScale;

@@ -30,4 +30,3 @@ void vector3_normalize(
     }
     *pVecB = tmpVec;
 }
-

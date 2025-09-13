@@ -20,18 +20,29 @@ int main()
     noecho();
     curs_set(0);
     nodelay(stdscr, TRUE);
+    start_color();
     WINDOW* pWindow;
 #ifdef DEBUG
     pWindow = newwin(WINDOW_HEIGHT, WINDOW_WIDTH, 0, 0);
 #else // DEBUG
     pWindow = stdscr;
 #endif // DEBUG
+    
+    if (has_colors() && can_change_color() && COLORS >= SHADE_COUNT) 
+    {
+        for (U1 i = 1; i < SHADE_COUNT+1; i++) {
+            U4 intensity = i * (U4)(1000 / SHADE_COUNT);
+            init_color(100+i, 0, intensity, 0);
+            init_pair(i, 100+i, COLOR_BLACK);
+        }
+    }
+
     // Prepare test data
     MODEL_t model;
     obj_read_model("res/cow.obj", &model);
     VECTOR3_t vecTrans = {0.f, 0.f, -10.f};
     VECTOR3_t vecScale = {1.f, 1.f, 1.f};
-    VECTOR3_t vecRotate = {0.0f, 1.0f, 0.f};
+    VECTOR3_t vecRotate = {.0f, 1.0f, 0.f};
     R4 angleRotate = 0.0;
 #ifdef DEBUG
     R4 angleRotateStep = DEG_TO_RAD(0);
@@ -43,6 +54,7 @@ int main()
     CAMERA_t camera;
     camera.vecPosition  = (VECTOR3_t){0, 0, 0};
     camera.vecRotation  = (VECTOR3_t){0, 0, 0};
+    camera.vecLight     = (VECTOR3_t){0, 0, -5};
     camera.fieldOfView  = 1.2f;
     camera.aspectRatio  = ((R4) WINDOW_WIDTH / 2.f) / (R4) (WINDOW_HEIGHT);
     camera.planeFar     = 400.f;
@@ -56,7 +68,7 @@ int main()
     FRAMEBUFFER_t pFramebuffer[2];
     RENDER_DATA_t dataRender = {
         .pFramebuffer       = &pFramebuffer[0],
-        .pMatViewProjected  = &camera.matViewProjected,
+        .pCamera            = &camera,
         .pModel             = &model,
         .pVecTrans          = &vecTrans,
         .pVecScale          = &vecScale,
