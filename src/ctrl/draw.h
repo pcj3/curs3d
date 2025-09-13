@@ -6,6 +6,7 @@
 
 typedef struct DRAW_DATA_s {
     FRAMEBUFFER_t*  pFramebuffer;
+    WINDOW*     pWindow;
 } DRAW_DATA_t;
 
 void draw_do(

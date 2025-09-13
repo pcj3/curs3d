@@ -2,7 +2,7 @@
 #include "triangle.h"
 #include "vector4.h"
 
-#define POINT_IN_TRIANGLE_TOLERANCE (-1e-3)
+#define POINT_IN_TRIANGLE_TOLERANCE (-1.e-3)
 
 void triangle_transformToPixelXY(
     IN const TRIANGLE_t* pkTriangleIn,

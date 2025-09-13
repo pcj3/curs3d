@@ -19,16 +19,19 @@ int main()
     raw();
     noecho();
     curs_set(0);
-#ifndef DEBUG
-    nodelay(stdscr, TRUE);
+    //nodelay(stdscr, TRUE);
+    WINDOW* pWindow;
+#ifdef DEBUG
+    pWindow = newwin(WINDOW_HEIGHT, WINDOW_WIDTH, 0, 0);
+#else // DEBUG
+    pWindow = stdscr;
 #endif // DEBUG
-
     // Prepare test data
     MODEL_t model;
-    obj_read_model("res/cube.obj", &model);
-    VECTOR3_t vecTrans = {0.f, 0.f, -5.f};
+    obj_read_model("res/cow.obj", &model);
+    VECTOR3_t vecTrans = {0.f, 0.f, -10.f};
     VECTOR3_t vecScale = {1.f, 1.f, 1.f};
-    VECTOR3_t vecRotate = {0.0f, 1.f, 0.f};
+    VECTOR3_t vecRotate = {0.0f, 1.0f, 0.f};
     R4 angleRotate = 0.0;
 #ifdef DEBUG
     R4 angleRotateStep = DEG_TO_RAD(0);
@@ -60,7 +63,8 @@ int main()
     };
 
     DRAW_DATA_t dataDraw = {
-        .pFramebuffer   = &pFramebuffer[1]
+        .pFramebuffer   = &pFramebuffer[1],
+        .pWindow        = pWindow
     };
 
     // Prepare threads
@@ -126,7 +130,8 @@ int main()
     pthread_join(threadRenderId, NULL);
     pthread_join(threadDrawId, NULL);
 
-    // Close stdscr
+    // Close windows
+    delwin(pWindow);
     endwin();
 	return 0;
 }
