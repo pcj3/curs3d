@@ -49,7 +49,7 @@ typedef U1                  DEPTH_t;    //
 // =====
 // CFG
 // =====
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
 #define WINDOW_WIDTH    ((U4) (80))
 #define WINDOW_HEIGHT   ((U4) (40))

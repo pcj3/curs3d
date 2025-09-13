@@ -19,7 +19,7 @@ int main()
     raw();
     noecho();
     curs_set(0);
-    //nodelay(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
     WINDOW* pWindow;
 #ifdef DEBUG
     pWindow = newwin(WINDOW_HEIGHT, WINDOW_WIDTH, 0, 0);

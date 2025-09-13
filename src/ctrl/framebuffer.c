@@ -50,8 +50,16 @@ void framebuffer_rasterizeTriangle(
 
     U4 minY = (U4) MAX(0, MIN(triangleXY.ptA.y, MIN(triangleXY.ptB.y, triangleXY.ptC.y)));
     U4 minX = (U4) MAX(0, MIN(triangleXY.ptA.x, MIN(triangleXY.ptB.x, triangleXY.ptC.x)));
-    U4 maxY = (U4) MIN(pFramebuffer->height, (U4) MAX(triangleXY.ptA.y, MAX(triangleXY.ptB.y, triangleXY.ptC.y))+1);
-    U4 maxX = (U4) MIN(pFramebuffer->width, (U4) MAX(triangleXY.ptA.x, MAX(triangleXY.ptB.x, triangleXY.ptC.x))+1);
+    U4 maxY = (U4) MIN(pFramebuffer->height, 
+                        ceilf(
+                            MAX(triangleXY.ptA.y, 
+                                MAX(triangleXY.ptB.y, triangleXY.ptC.y)))+1
+                        );
+    U4 maxX = (U4) MIN(pFramebuffer->width,
+                        ceilf(
+                            MAX(triangleXY.ptA.x, 
+                                MAX(triangleXY.ptB.x, triangleXY.ptC.x)))+1
+                        );
 
     BARRYCENTRIC_DATA_t dataBarrycentric;
     triangle_getDataBarrycentric(&triangleXY, &dataBarrycentric);
@@ -61,7 +69,7 @@ void framebuffer_rasterizeTriangle(
         {
             BRAILLE_t braille = {0};
             for (int idxDot = 0; idxDot < BRAILLE_DOTS_COUNT; idxDot++)
-            {
+            {   
                 VECTOR3_t vecBarrycentric = {0};
                 triangle_setVecBarrycentric(
                     (R4)x + BRAILLE_LUT[idxDot].dx,
