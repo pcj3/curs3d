@@ -32,9 +32,6 @@ $(BUILD_DIR)/%.c.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(DFLAGS) -c $< -o $@
 
 debug: CFLAGS += -g
-ifeq ($(UNAME_S),Darwin)
-	CFLAGS += -gdwarf-4 -O0
-endif
 debug: $(TARGET_EXEC)
 
 
