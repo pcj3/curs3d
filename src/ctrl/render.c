@@ -73,8 +73,7 @@ void render_do(INOUT RENDER_DATA_t* pData)
             vector3_normalize(&crossProd, &normal);
 
             pData->pModel->normals[idxFace] = normal;
-
-            for (U1 idxVertex = 0;  idxVertex < pFace->numberVertices; idxVertex++)
+            for (U1 idxVertex = 0; idxVertex < pFace->numberVertices; idxVertex++)
             {
                 pFace->idxNormals[idxVertex] = idxFace;
             }

@@ -40,7 +40,7 @@ void vector3_crossProd(
 
     tmpVec.x = pkVecA->y * pkVecB->z - pkVecA->z * pkVecB->y;
     tmpVec.y = pkVecA->z * pkVecB->x - pkVecA->x * pkVecB->z;
-    tmpVec.x = pkVecA->x * pkVecB->y - pkVecA->y * pkVecB->x;
+    tmpVec.z = pkVecA->x * pkVecB->y - pkVecA->y * pkVecB->x;
 
     *pVecC = tmpVec;
 }
