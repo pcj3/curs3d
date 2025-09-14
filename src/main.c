@@ -39,10 +39,10 @@ int main()
 
     // Prepare test data
     MODEL_t model;
-    obj_read_model("res/cube.obj", &model);
+    obj_read_model("res/cow.obj", &model);
     VECTOR3_t vecTrans  =   {0.f, 0.f, 0.f};
     VECTOR3_t vecScale  =   {1.f, 1.f, 1.f};
-    VECTOR3_t vecRotate =   {0.f, 1.f, 1.f};
+    VECTOR3_t vecRotate =   {0.f, 1.f, 0.f};
     R4 angleRotate = 0.0;
 #ifdef DEBUG
     R4 angleRotateStep = DEG_TO_RAD(0);
@@ -52,7 +52,7 @@ int main()
 
     // Prepare camera
     CAMERA_t camera;
-    camera.vecPosition  = (VECTOR3_t){0, 0, -3};
+    camera.vecPosition  = (VECTOR3_t){0, 0, -10.f};
     camera.vecRotation  = (VECTOR3_t){0, 0, 0};
     camera.vecLight     = (VECTOR3_t){0, 0, 10};
     camera.fieldOfView  = 1.2f;

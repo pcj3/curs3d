@@ -63,7 +63,7 @@ typedef U1                  COLOR_t;
 
 #define SHADE_COUNT 10
 #define SHADE_MAX 1000
-#define SHADE_MIN 300
+#define SHADE_MIN 0
 #define SHADE_STEP  ((SHADE_MAX - SHADE_MIN) / SHADE_COUNT)
 #define SHADE_OFFSET_IDX 1
 

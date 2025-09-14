@@ -37,6 +37,54 @@ void render_do(INOUT RENDER_DATA_t* pData)
         WINDOW_HEIGHT,
         pData->pFramebuffer);
     
+
+    // Check if normals are there and calulate if needed
+    if ((pData->pModel->faceAttr == FACE_ATTR_VERTICES)
+        || (pData->pModel->faceAttr == FACE_ATTR_VERTICES_TEXTURES))
+    {   
+        
+        FACE_t* pFace = pData->pModel->faces;
+        for (U4 idxFace = 0; idxFace < pData->pModel->numberFaces; idxFace++, pFace++) 
+        {
+            VECTOR3_t ptA = {
+                .x = pData->pModel->vertices[pFace->idxVertices[0]].x,
+                .y = pData->pModel->vertices[pFace->idxVertices[0]].y,
+                .z = pData->pModel->vertices[pFace->idxVertices[0]].z
+            };
+            VECTOR3_t ptB = {
+                .x = pData->pModel->vertices[pFace->idxVertices[1]].x,
+                .y = pData->pModel->vertices[pFace->idxVertices[1]].y,
+                .z = pData->pModel->vertices[pFace->idxVertices[1]].z
+            };
+            VECTOR3_t ptC = {
+                .x = pData->pModel->vertices[pFace->idxVertices[2]].x,
+                .y = pData->pModel->vertices[pFace->idxVertices[2]].y,
+                .z = pData->pModel->vertices[pFace->idxVertices[2]].z
+            };
+
+            VECTOR3_t normal;
+            VECTOR3_t vecAB;
+            VECTOR3_t vecAC;
+            VECTOR3_t crossProd;
+
+            vector3_subtract(&ptB, &ptA, &vecAB);
+            vector3_subtract(&ptC, &ptA, &vecAC);
+            vector3_crossProd(&vecAB, &vecAC, &crossProd);
+            vector3_normalize(&crossProd, &normal);
+
+            pData->pModel->normals[idxFace] = normal;
+
+            for (U1 idxVertex = 0;  idxVertex < pFace->numberVertices; idxVertex++)
+            {
+                pFace->idxNormals[idxVertex] = idxFace;
+            }
+
+        }
+        pData->pModel->faceAttr = FACE_ATTR_VERTICES_NORMALS;
+    }
+
+
+
     // Render each face
     TRIANGLE_t triangleVertices;
     TRIANGLE_t triangleNormals;
