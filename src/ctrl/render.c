@@ -27,8 +27,7 @@ void render_do(INOUT RENDER_DATA_t* pData)
         &matTrans);
         
     // Apply view projected matrix
-    matrix44_multiply(
-        &pData->pCamera->matViewProjected,
+    matrix44_multiply(&pData->pCamera->matViewProjected,
         &matTrans,
         &matViewProjTrans);
     
@@ -42,54 +41,42 @@ void render_do(INOUT RENDER_DATA_t* pData)
     TRIANGLE_t triangleVertices;
     TRIANGLE_t triangleNormals;
     TRIANGLE_t trianglePosToLight;
-    VECTOR3_t brightness;
     FACE_t* pFace = pData->pModel->faces;
     for (U4 i = 0; i < pData->pModel->numberFaces; i++, pFace++)
     {   
-        // Only triangles are supported
-        if (pFace->numberVertices == 3)
-        {
-            shaderVertex_do(0,
-                pData->pModel,
-                pFace,
-                &matTrans,
-                &matViewProjTrans,
-                &pData->pCamera->vecLight,
-                &triangleVertices.ptA,
-                &triangleNormals.ptA,
-                &trianglePosToLight.ptA);
-            shaderVertex_do(1,
-                pData->pModel,
-                pFace,
-                &matTrans,
-                &matViewProjTrans,
-                &pData->pCamera->vecLight,
-                &triangleVertices.ptB,
-                &triangleNormals.ptB,
-                &trianglePosToLight.ptB);
-            shaderVertex_do(2,
-                pData->pModel,
-                pFace,
-                &matTrans,
-                &matViewProjTrans,
-                &pData->pCamera->vecLight,
-                &triangleVertices.ptC,
-                &triangleNormals.ptC,
-                &trianglePosToLight.ptC);
+
+        shaderVertex_do(0,
+            pData->pModel,
+            pFace,
+            &matTrans,
+            &matViewProjTrans,
+            &pData->pCamera->vecLight,
+            &triangleVertices.ptA,
+            &triangleNormals.ptA,
+            &trianglePosToLight.ptA);
+        shaderVertex_do(1,
+            pData->pModel,
+            pFace,
+            &matTrans,
+            &matViewProjTrans,
+            &pData->pCamera->vecLight,
+            &triangleVertices.ptB,
+            &triangleNormals.ptB,
+            &trianglePosToLight.ptB);
+        shaderVertex_do(2,
+            pData->pModel,
+            pFace,
+            &matTrans,
+            &matViewProjTrans,
+            &pData->pCamera->vecLight,
+            &triangleVertices.ptC,
+            &triangleNormals.ptC,
+            &trianglePosToLight.ptC);
             
-            shaderFragment_do(&triangleNormals.ptA,
-                &trianglePosToLight.ptA,
-                &brightness.x);
-            shaderFragment_do(&triangleNormals.ptB,
-                &trianglePosToLight.ptB,
-                &brightness.y);
-            shaderFragment_do(&triangleNormals.ptC,
-                &trianglePosToLight.ptC,
-                &brightness.z);
-        }
         // Rasterize
         framebuffer_rasterizeTriangle(&triangleVertices,
-            &brightness,
+            &triangleNormals,
+            &trianglePosToLight,
             pData->pFramebuffer);
     }
 }

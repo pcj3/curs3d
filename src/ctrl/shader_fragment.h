@@ -1,12 +1,12 @@
 #ifndef CTRL_SHADER_FRAGMENT_h
 #define CTRL_SHADER_FRAGMENT_h
 #include "defs.h"
-#include "vector4.h"
+#include "vector3.h"
 
 
 void shaderFragment_do(
-    IN VECTOR4_t* pNormals,
-    IN VECTOR4_t* pPosToLight,
+    IN VECTOR3_t* pNormals,
+    IN VECTOR3_t* pPosToLight,
     OUT R4*       pBrightness);
 
 

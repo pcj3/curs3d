@@ -17,12 +17,12 @@ void shaderVertex_do(
             .x = pModel->normals[pFace->idxNormals[idx]].x,
             .y = pModel->normals[pFace->idxNormals[idx]].y,
             .z = pModel->normals[pFace->idxNormals[idx]].z,
-            .w = 0};
+            .w = 0.f};
     VECTOR4_t posLight = {
             .x = pVecLight->x,
             .y = pVecLight->y,
             .z = pVecLight->z,
-            .w = 1};
+            .w = 1.f};
     
     
     // Apply transfomation to vertex
@@ -31,7 +31,7 @@ void shaderVertex_do(
         pVertex);
     vector4_divideXYByZ(pVertex);
 
-    // Apply transformation to triangle normal
+    //Apply transformation to triangle normal
     matrix44_multiplyByVector4(pMatTrans,
         &normal,
         pNormal);

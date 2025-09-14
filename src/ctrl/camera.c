@@ -18,10 +18,8 @@ void camera_setView(
 
     matrix44_setToIdentity(&pCamera->matView);
     
-    matrix44_translateByVector3(&pCamera->matView,
-        &pCamera->vecPosition,
-        &pCamera->matView);
-        
+
+
     matrix44_rotateByVector3(&pCamera->matView,
         &axisX,
         pCamera->vecRotation.x,
@@ -35,7 +33,10 @@ void camera_setView(
         pCamera->vecRotation.z,
         &pCamera->matView);
 
-
+    matrix44_translateByVector3(&pCamera->matView,
+        &pCamera->vecPosition,
+        &pCamera->matView);
+        
 }
 
 void camera_setProjection(
@@ -49,5 +50,5 @@ void camera_setProjection(
     pCamera->matProjection.e22 = - (pCamera->planeFar + pCamera->planeNear) / planeDist;
     pCamera->matProjection.e23 = - 1.f;
     pCamera->matProjection.e32 = - (2.f * pCamera->planeFar * pCamera->planeNear) / planeDist;
-    pCamera->matProjection.e33 = 0.f;
+    pCamera->matProjection.e33 = 1.f;
 }

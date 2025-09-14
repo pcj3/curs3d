@@ -36,8 +36,9 @@ void framebuffer_setPixel(
     INOUT FRAMEBUFFER_t* pFamebuffer);
 
 void framebuffer_rasterizeTriangle(
-    IN TRIANGLE_t* pTriangle,
-    IN VECTOR3_t* pBrightness,
+    IN TRIANGLE_t* pTriangleVerticies,
+    IN TRIANGLE_t* pTriangleNormals,
+    IN TRIANGLE_t* pTrianglePosToLight,
     OUT FRAMEBUFFER_t* pFramebuffer);
 
 #endif // DRAW_FRAMEBUFFER_h

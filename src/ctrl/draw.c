@@ -22,13 +22,13 @@ void draw_do(INOUT DRAW_DATA_t* pData)
             {
                 continue;
             }
-            COLOR_t color = 0;
+            U4 color = 0;
             for (U1 idxDot = 0; idxDot < BRAILLE_DOTS_COUNT; idxDot++)
             {
                 if (braille_getDotState(brailleDotMask, idxDot))
                 {
                     color += pData->pFramebuffer->colors[idxColor+idxDot];
-                    color = MAX(color, pData->pFramebuffer->colors[idxColor+idxDot]);
+                    //color = MIN(color, pData->pFramebuffer->colors[idxColor+idxDot]);
                 }
             }
             color /= braille_countDots(brailleDotMask);
