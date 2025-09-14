@@ -12,6 +12,6 @@ void shaderFragment_do(
     R4 shade = pNormals->x * pPosToLight->x 
         + pNormals->y * pPosToLight->y 
         + pNormals->z * pPosToLight->z;
-    shade = fabsf( shade);
-    *pBrightness = (1.f - shade) * SHADE_COUNT;
+    shade = MAX(.19, shade);
+    *pBrightness = (1.f - shade);
 }

@@ -40,6 +40,7 @@ void shaderVertex_do(
     matrix44_multiplyByVector4(pMatTrans,
         &vertex,
         pPosToLight);
+    //vector4_divideXYByZ(pPosToLight);
     // Make it a vector to light source
     vector4_subtract(&posLight, 
         pPosToLight,

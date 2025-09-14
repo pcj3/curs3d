@@ -132,7 +132,7 @@ void framebuffer_rasterizeTriangle(
                         &correctedPosToLight,
                         &shade);
 
-                    braille.colors[idxDot] = shade;
+                    braille.colors[idxDot] = shade * SHADE_COUNT;
                 }
             }
             

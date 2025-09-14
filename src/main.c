@@ -29,20 +29,20 @@ int main()
 #endif // DEBUG
     
     if (has_colors() && can_change_color() && COLORS >= SHADE_COUNT) 
-    {
-        for (U1 i = 1; i < SHADE_COUNT+1; i++) {
-            U4 intensity = i * (U4)(1000 / SHADE_COUNT);
-            init_color(100+i, 0, intensity, 0);
-            init_pair(i, 100+i, COLOR_BLACK);
+    {   
+        for (U1 i = 0; i < SHADE_COUNT + 1; i++) {
+            U4 shade = SHADE_MAX - i * SHADE_STEP;
+            init_color(100+i, 0, shade, 0);
+            init_pair(i+SHADE_OFFSET_IDX, 100+i, COLOR_BLACK);
         }
     }
 
     // Prepare test data
     MODEL_t model;
     obj_read_model("res/cube.obj", &model);
-    VECTOR3_t vecTrans  =   {0.f, 0.f, -3.f};
+    VECTOR3_t vecTrans  =   {0.f, 0.f, 0.f};
     VECTOR3_t vecScale  =   {1.f, 1.f, 1.f};
-    VECTOR3_t vecRotate =   {0.f, 1.f, 0.f};
+    VECTOR3_t vecRotate =   {0.f, 1.f, 1.f};
     R4 angleRotate = 0.0;
 #ifdef DEBUG
     R4 angleRotateStep = DEG_TO_RAD(0);
@@ -52,7 +52,7 @@ int main()
 
     // Prepare camera
     CAMERA_t camera;
-    camera.vecPosition  = (VECTOR3_t){0, 0, 0};
+    camera.vecPosition  = (VECTOR3_t){0, 0, -3};
     camera.vecRotation  = (VECTOR3_t){0, 0, 0};
     camera.vecLight     = (VECTOR3_t){0, 0, 10};
     camera.fieldOfView  = 1.2f;

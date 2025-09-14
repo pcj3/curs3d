@@ -42,22 +42,24 @@ static void obj_addAttrsToFace(
     {
         obj_setFaceAttrType(word, p_faceAttr);
     }
-    CH* p_word;
-    p_face->idxVertices[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+    CH* p_word = word;
     switch (*p_faceAttr)
     {
     case FACE_ATTR_VERTICES_TEXTURES:
-        p_face->idxTextures[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+        p_face->idxVertices[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(p_word, "/", &p_word));
+        p_face->idxTextures[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(p_word, "/", &p_word));
         break;
     case FACE_ATTR_VERTICES_NORMALS:
-        p_face->idxNormals[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+        p_face->idxVertices[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(p_word, "//", &p_word));
+        p_face->idxNormals[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(p_word, "//", &p_word));
         break;
     case FACE_ATTR_VERTICES_TEXTURES_NORMALS:
-        p_face->idxTextures[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
-        p_face->idxNormals[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(word, "/", &p_word));
+        p_face->idxVertices[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(p_word, "/", &p_word));
+        p_face->idxTextures[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(p_word, "/", &p_word));
+        p_face->idxNormals[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(p_word, "/", &p_word));
         break;
     case FACE_ATTR_VERTICES:
-        FALLTHROUGH;
+        p_face->idxVertices[faceIdx] = OBJ_IDX_TO_MAT_IDX(strtok_r(p_word, "/", &p_word));
     default:
         break;
     }

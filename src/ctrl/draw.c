@@ -8,8 +8,6 @@ void draw_do(INOUT DRAW_DATA_t* pData)
     werase(pData->pWindow);
 #ifdef DEBUG
     mvprintw(0, 0, "W: %lu H: %lu",  pData->pFramebuffer->width, pData->pFramebuffer->height);
-    mvwaddch(pData->pWindow, 13, 0, 'Y');
-    mvwaddch(pData->pWindow, 10, 67, 'X');
 #endif //DEBUG
     for (U4 y = 0; y < pData->pFramebuffer->height; y++)
     {
@@ -28,14 +26,13 @@ void draw_do(INOUT DRAW_DATA_t* pData)
                 if (braille_getDotState(brailleDotMask, idxDot))
                 {
                     color += pData->pFramebuffer->colors[idxColor+idxDot];
-                    //color = MIN(color, pData->pFramebuffer->colors[idxColor+idxDot]);
                 }
             }
             color /= braille_countDots(brailleDotMask);
             wchar_t braille[] = {(wchar_t)(brailleDotMask + BRAILLE_UNICODE_OFFSET), L'\0'};
-            attron(COLOR_PAIR(color+1));
+            attron(COLOR_PAIR(color+SHADE_OFFSET_IDX));
             mvwaddwstr(pData->pWindow, (I)y, (I)x, braille);
-            attron(COLOR_PAIR(color+1));
+            attron(COLOR_PAIR(color+SHADE_OFFSET_IDX));
         }
     }
     wrefresh(pData->pWindow);
