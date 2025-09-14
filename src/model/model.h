@@ -9,8 +9,6 @@
 #define MODEL_MAX_VERTICES 10000
 #define MODEL_MAX_FACES 10000
 
-
-
 typedef struct MODEL_S
 {
     VECTOR4_t   vertices[MODEL_MAX_VERTICES];

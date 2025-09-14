@@ -15,7 +15,12 @@ void vector4_multiplyElementWiseByVector4(
     IN const VECTOR4_t* pkVecB,
     OUT VECTOR4_t* pVecC);
 
-void vector4_addElementWiseVector4(
+void vector4_add(
+    IN const VECTOR4_t* pkVecA,
+    IN const VECTOR4_t* pkVecB,
+    OUT VECTOR4_t* pVecC);
+
+void vector4_subtract(
     IN const VECTOR4_t* pkVecA,
     IN const VECTOR4_t* pkVecB,
     OUT VECTOR4_t* pVecC);

@@ -24,6 +24,7 @@
 #define PAD(X) U1 __PADNAME(__LINE__)[X]
 #define __PADNAME(x) __pad##x
 #define PI_R4 (3.141592653f)
+
 #define DEG_TO_RAD(X) ((X) * PI_R4 / 180.0f)
 
 typedef signed int          I;          // equal to I44
@@ -42,7 +43,7 @@ typedef char                CH;         // ASCII character
 typedef bool                BOOL;       // bool
 typedef U1                  GLYPH_t;    // 
 typedef U1                  DEPTH_t;    //
-
+typedef U1                  COLOR_t;
 
 
 
@@ -60,6 +61,11 @@ typedef U1                  DEPTH_t;    //
 
 #define FPS_TARGET (60)
 
+#define SHADE_COUNT 10
+#define SHADE_MAX 1000
+#define SHADE_MIN 0
+#define SHADE_STEP  ((SHADE_MAX - SHADE_MIN) / SHADE_COUNT)
+#define SHADE_OFFSET_IDX 1
 
 
 #endif // AUX_H

@@ -27,13 +27,13 @@ void triangle_transformToPixelXY(
         &vecToMult,
         &pTriangleOut->ptC);
 
-    vector4_addElementWiseVector4(&pTriangleOut->ptA,
+    vector4_add(&pTriangleOut->ptA,
          &vecToAdd,
          &pTriangleOut->ptA);
-    vector4_addElementWiseVector4(&pTriangleOut->ptB,
+    vector4_add(&pTriangleOut->ptB,
         &vecToAdd,
         &pTriangleOut->ptB);
-    vector4_addElementWiseVector4(&pTriangleOut->ptC,
+    vector4_add(&pTriangleOut->ptC,
         &vecToAdd,
         &pTriangleOut->ptC);
 }

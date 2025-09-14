@@ -31,3 +31,30 @@ void vector3_normalize(
     *pVecB = tmpVec;
 }
 
+void vector3_crossProd(
+    IN const VECTOR3_t* pkVecA,
+    IN const VECTOR3_t* pkVecB,
+    OUT VECTOR3_t* pVecC)
+{
+    VECTOR3_t tmpVec;
+
+    tmpVec.x = pkVecA->y * pkVecB->z - pkVecA->z * pkVecB->y;
+    tmpVec.y = pkVecA->z * pkVecB->x - pkVecA->x * pkVecB->z;
+    tmpVec.x = pkVecA->x * pkVecB->y - pkVecA->y * pkVecB->x;
+
+    *pVecC = tmpVec;
+}
+
+void vector3_subtract(
+    IN const VECTOR3_t* pkVecA,
+    IN const VECTOR3_t* pkVecB,
+    OUT VECTOR3_t* pVecC)
+{
+    VECTOR3_t tmpVec;
+
+    tmpVec.x = pkVecA->x - pkVecB->x;
+    tmpVec.y = pkVecA->y - pkVecB->y;
+    tmpVec.z = pkVecA->z - pkVecB->z;
+
+    *pVecC = tmpVec;
+}
