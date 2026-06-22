@@ -1,6 +1,7 @@
 # curs3d 
 
 A real-time 3D rendering engine that displays 3D models directly in your terminal using braille Unicode characters for sub-character pixel precision.
+![demo](https://github.com/pcj3/curs3d/tree/master/res/cow_demo.mp4)]
 
 ## Features
 

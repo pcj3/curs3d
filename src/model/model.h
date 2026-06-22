@@ -6,8 +6,8 @@
 #include "face.h"
 
 #define MODEL_MAX_NAME 100
-#define MODEL_MAX_VERTICES 100000
-#define MODEL_MAX_FACES 100000
+#define MODEL_MAX_VERTICES 5000
+#define MODEL_MAX_FACES 10000
 
 typedef struct MODEL_S
 {
